@@ -51,6 +51,13 @@ resource "azurerm_network_security_group" "atlantis_nsg" {
     destination_address_prefix = "*"
   }
 }
+resource "azurerm_public_ip" "atlantis_ip" {
+  name                = "atlantis_ip"
+  location            = azurerm_resource_group.atlantis_rg.location
+  resource_group_name = azurerm_resource_group.atlantis_rg.name
+  allocation_method   = "Dynamic"
+}
+
 resource "azurerm_network_interface" "atlantis_nic" {
   name                = "atlantis-nic"
   location            = azurerm_resource_group.atlantis_rg.location
@@ -60,9 +67,9 @@ resource "azurerm_network_interface" "atlantis_nic" {
     name                          = "internal"
     subnet_id                     = azurerm_subnet.atlantis_subnet.id
     private_ip_address_allocation = "Dynamic"
+    public_ip_address_id          = azurerm_public_ip.atlantis_ip.id
   }
 
-  network_security_group_id = azurerm_network_security_group.atlantis_nsg.id
 }
 resource "azurerm_linux_virtual_machine" "atlantis_vm" {
   name                = "atlantis-vm"
@@ -76,6 +83,11 @@ resource "azurerm_linux_virtual_machine" "atlantis_vm" {
   network_interface_ids = [
     azurerm_network_interface.atlantis_nic.id,
   ]
+  admin_ssh_key {
+    username   = "domainadmin"
+    public_key = file("../.ssh/id_rsa.pub") # Ensure this path is correct
+  }
+
 
   os_disk {
     caching              = "ReadWrite"
@@ -89,15 +101,4 @@ resource "azurerm_linux_virtual_machine" "atlantis_vm" {
     version   = "latest"
   }
 
-  custom_data = <<-EOF
-  #!/bin/bash
-  sudo apt-get update
-  sudo apt-get install -y docker.io
-  sudo systemctl start docker
-  sudo docker run -d -p 4141:4141 --name atlantis \
-    -e ATLANTIS_GH_USER=${var.github_user} \
-    -e ATLANTIS_GH_TOKEN=${var.github_token} \
-    -e ATLANTIS_REPO_WHITELIST='github.com/${var.github_org}/*' \
-    runatlantis/atlantis
-  EOF
 }
