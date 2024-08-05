@@ -7,3 +7,8 @@ terraform.tfstate
 terraform.tfstate.backup
 variables.tf
 Atlantis/.terraform/providers/registry.terraform.io/hashicorp/azurerm/3.0.2/windows_amd64/terraform-provider-azurerm_v3.0.2_x5.exe
+Atlantis/atlantis.tfsate
+Atlantis/atlantis.tfsate.backup
+Atlantis/.terraform/providers/registry.terraform.io/hashicorp/azurerm/3.0.2/linux_amd64/terraform-provider-azurerm_v3.0.2_x5
+.terraform/providers/registry.terraform.io/hashicorp/azurerm/3.0.2/linux_amd64/terraform-provider-azurerm_v3.0.2_x5
+/Ansible

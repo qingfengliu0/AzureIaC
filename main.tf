@@ -72,7 +72,7 @@ resource "azurerm_linux_virtual_machine" "resume_web" {
   name                = "resume-web"
   resource_group_name = azurerm_resource_group.resume.name
   location            = azurerm_resource_group.resume.location
-  size                = "Standard_F2"
+  size                = "Standard_B2"
   admin_username      = "domainadmin"
   network_interface_ids = [
     azurerm_network_interface.resume_nic.id,
@@ -80,7 +80,7 @@ resource "azurerm_linux_virtual_machine" "resume_web" {
 
   admin_ssh_key {
     username   = "domainadmin"
-    public_key = file(".ssh/id_rsa.pub") # Ensure this path is correct
+    public_key = file("~/.ssh/azure.pub") # Ensure this path is correct
   }
 
   os_disk {
