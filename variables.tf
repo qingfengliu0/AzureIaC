@@ -15,5 +15,7 @@ variable "admin_username"{
 }
 
 variable "admin_password"{
-  default = "FengFeng!1296#"
+  description = "admin password for vm"
+  type        = string
+  sensitive   = true
 }
