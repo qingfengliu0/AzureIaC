@@ -122,7 +122,7 @@ resource "azurerm_linux_virtual_machine" "atlantis_vm" {
   ]
   admin_ssh_key {
     username   = "domainadmin"
-    public_key = file("~/.ssh/atlantis.pub") # Ensure this path is correct
+    public_key = file("atlantis.pub") # Ensure this path is correct
   }
 
 

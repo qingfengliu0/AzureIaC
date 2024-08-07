@@ -80,7 +80,7 @@ resource "azurerm_linux_virtual_machine" "resume_web" {
 
   admin_ssh_key {
     username   = "domainadmin"
-    public_key = file("~/.ssh/azure.pub") # Ensure this path is correct
+    public_key = file("azure.pub") # Ensure this path is correct
   }
 
   os_disk {
