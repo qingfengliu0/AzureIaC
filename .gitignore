@@ -5,7 +5,6 @@ terraform.tfstate
 .ssh/id_rsa
 .ssh/id_rsa.pub
 terraform.tfstate.backup
-variables.tf
 Atlantis/.terraform/providers/registry.terraform.io/hashicorp/azurerm/3.0.2/windows_amd64/terraform-provider-azurerm_v3.0.2_x5.exe
 Atlantis/atlantis.tfsate
 Atlantis/atlantis.tfsate.backup

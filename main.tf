@@ -43,7 +43,7 @@ resource "azurerm_subnet" "main" {
   name                 = "internal"
   resource_group_name  = azurerm_resource_group.resume.name
   virtual_network_name = azurerm_virtual_network.vnet.name
-  address_prefixes     = ["10.0.2.0/24"]
+  address_prefixes     = ["10.0.1.0/24"]
 }
 
 # Create a public IP
@@ -72,7 +72,7 @@ resource "azurerm_linux_virtual_machine" "resume_web" {
   name                = "resume-web"
   resource_group_name = azurerm_resource_group.resume.name
   location            = azurerm_resource_group.resume.location
-  size                = "Standard_B2"
+  size                = "Standard_B2s"
   admin_username      = "domainadmin"
   network_interface_ids = [
     azurerm_network_interface.resume_nic.id,
@@ -80,7 +80,7 @@ resource "azurerm_linux_virtual_machine" "resume_web" {
 
   admin_ssh_key {
     username   = "domainadmin"
-    public_key = file("~/.ssh/azure.pub") # Ensure this path is correct
+    public_key = file("azure.pub") # Ensure this path is correct
   }
 
   os_disk {
