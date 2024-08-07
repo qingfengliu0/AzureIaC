@@ -72,7 +72,7 @@ resource "azurerm_linux_virtual_machine" "resume_web" {
   name                = "resume-web"
   resource_group_name = azurerm_resource_group.resume.name
   location            = azurerm_resource_group.resume.location
-  size                = "Standard_B2"
+  size                = "Standard_B2s"
   admin_username      = "domainadmin"
   network_interface_ids = [
     azurerm_network_interface.resume_nic.id,
