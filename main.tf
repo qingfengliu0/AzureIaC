@@ -5,6 +5,10 @@ terraform {
       source  = "hashicorp/azurerm"
       version = "~> 3.0.2"
     }
+    cloudflare = {
+      source = "cloudflare/cloudflare"
+      version = "4.35.0"
+    }
   }
   backend "azurerm" {
     resource_group_name   = "resume"
