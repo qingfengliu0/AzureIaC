@@ -74,18 +74,14 @@ resource "azurerm_cdn_endpoint" "resumecdnendpoint" {
     name = "redirect-to-https"
     order = 1
 
-    conditions {
-      condition = "UrlPath"
+    request_uri_condition {
       operator  = "Equal"
       match_values = ["/"]
     }
 
-    actions {
-      action = "Redirect"
-      parameters {
-        redirect_type = "Found"
-        destination_protocol = "Https"
-      }
+    url_redirect_action {
+      redirect_type = "Found"
+      protocol = "Https"
     }
   }
 }
