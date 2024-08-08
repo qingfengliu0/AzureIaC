@@ -139,3 +139,18 @@ resource "azurerm_linux_virtual_machine" "atlantis_vm" {
   }
 
 }
+
+# Configure the Cloudflare provider
+provider "cloudflare" {
+  email   = var.cloudflare_email
+  api_key = var.cloudflare_api_key
+}
+
+# Define the DNS record
+resource "cloudflare_record" "your_domain" {
+  zone_id = var.cloudflare_zone_id
+  name    = var.dns_name
+  value   = var.dns_value
+  type    = "A"
+  ttl     = 300
+}
