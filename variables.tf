@@ -41,9 +41,11 @@ variable "cloudflare_zone_id" {
 variable "dns_name" {
   description = "resume.qliu.ca"
   type        = string
+  default = "resume.qliu.ca"
 }
 
 variable "dns_value" {
-  description = "52.149.3.82"
+  description = "server ip address"
   type        = string
+  default = "52.149.3.82"
 }
