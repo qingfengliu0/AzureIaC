@@ -5,6 +5,10 @@ terraform {
       source  = "hashicorp/azurerm"
       version = "~> 3.0.2"
     }
+    cloudflare = {
+      source = "cloudflare/cloudflare"
+      version = "4.35.0"
+    }
   }
   backend "azurerm" {
     resource_group_name   = "resume"
@@ -94,4 +98,18 @@ resource "azurerm_linux_virtual_machine" "resume_web" {
     sku       = "22_04-lts"
     version   = "latest"
   }
+}
+# Configure the Cloudflare provider
+provider "cloudflare" {
+  email   = var.cloudflare_email
+  api_key = var.cloudflare_api_key
+}
+
+# Define the DNS record
+resource "cloudflare_record" "your_domain" {
+  zone_id = var.cloudflare_zone_id
+  name    = var.dns_name
+  value   = var.dns_value
+  type    = "A"
+  ttl     = 300
 }

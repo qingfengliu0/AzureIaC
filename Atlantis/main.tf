@@ -10,7 +10,6 @@ terraform {
     }
   }
 
-  
   backend "azurerm" {
     resource_group_name   = "atlantis-resource-group"
     storage_account_name  = "qliuatlantisstorage" # Ensure this follows Azure naming conventions

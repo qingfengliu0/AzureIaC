@@ -11,3 +11,5 @@ Atlantis/atlantis.tfsate.backup
 Atlantis/.terraform/providers/registry.terraform.io/hashicorp/azurerm/3.0.2/linux_amd64/terraform-provider-azurerm_v3.0.2_x5
 .terraform/providers/registry.terraform.io/hashicorp/azurerm/3.0.2/linux_amd64/terraform-provider-azurerm_v3.0.2_x5
 /Ansible
+atlantis.pubZone.Identifier
+azure.pubZone.Identifier
