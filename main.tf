@@ -71,7 +71,7 @@ resource "azurerm_cdn_endpoint" "resumecdnendpoint" {
   is_https_allowed = true
 
   delivery_rule {
-    name = "redirect-to-https"
+    name = "redirect2https"
     order = 1
 
     request_uri_condition {
