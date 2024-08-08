@@ -33,6 +33,64 @@ resource "azurerm_resource_group" "resume" {
     Team        = "Steven"
   }
 }
+#Create a Blob Storage for holding the static code
+resource "azurerm_storage_account" "resumewebstorage" {
+  name                     = "resumewebstorage"
+  resource_group_name      = azurerm_resource_group.resume.name
+  location                 = azurerm_resource_group.resume.location
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
+
+  static_website {
+    index_document     = "index.html"
+    error_404_document = "404.html"
+  }
+}
+#Create a CDN Profile
+resource "azurerm_cdn_profile" "resumecdn" {
+  name                = "resumecdn"
+  location            = azurerm_resource_group.resume.location
+  resource_group_name = azurerm_resource_group.resume.name
+  sku                 = "Standard_Microsoft"
+}
+
+#Create a CDN Endpoint
+resource "azurerm_cdn_endpoint" "resumecdnendpoint" {
+  name                = "resumecdnendpoint"
+  resource_group_name = azurerm_resource_group.resume.name
+  profile_name        = azurerm_cdn_profile.resumecdn.name
+  location            = azurerm_resource_group.resume.location
+  origin_host_header  = azurerm_storage_account.resumewebstorage.primary_blob_endpoint
+  origin_path         = "/$web"
+  origin {
+    name      = "storage-origin"
+    host_name = azurerm_storage_account.resumewebstorage.primary_blob_endpoint
+  }
+
+  is_http_allowed = true
+  is_https_allowed = true
+
+  delivery_rule {
+    name = "redirect-to-https"
+    order = 1
+
+    conditions {
+      condition = "UrlPath"
+      operator  = "Equal"
+      match_values = ["/"]
+    }
+
+    actions {
+      action = "Redirect"
+      parameters {
+        redirect_type = "Found"
+        destination_protocol = "Https"
+      }
+    }
+  }
+}
+
+
 
 # Create a virtual network
 resource "azurerm_virtual_network" "vnet" {
