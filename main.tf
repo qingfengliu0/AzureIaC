@@ -33,6 +33,58 @@ resource "azurerm_resource_group" "resume" {
     Team        = "Steven"
   }
 }
+#Create a Blob Storage for holding the static code
+resource "azurerm_storage_account" "resumewebstorage" {
+  name                     = "resumewebstorage"
+  resource_group_name      = azurerm_resource_group.resume.name
+  location                 = azurerm_resource_group.resume.location
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
+
+  static_website {
+    index_document     = "index.html"
+    error_404_document = "404.html"
+  }
+}
+#Create a CDN Profile
+resource "azurerm_cdn_profile" "resumecdn" {
+  name                = "resumecdn"
+  location            = "eastus"
+  resource_group_name = azurerm_resource_group.resume.name
+  sku                 = "Standard_Microsoft"
+}
+
+#Create a CDN Endpoint
+resource "azurerm_cdn_endpoint" "resumecdnendpointqliu" {
+  name                = "resumecdnendpointqliu"
+  resource_group_name = azurerm_resource_group.resume.name
+  profile_name        = azurerm_cdn_profile.resumecdn.name
+  location            = "eastus"
+  origin {
+    name      = "storage-origin"
+    host_name = "www.resume.qliu.ca"
+  }
+
+  is_http_allowed = true
+  is_https_allowed = true
+
+  delivery_rule {
+    name = "redirect2https"
+    order = 1
+
+    request_uri_condition {
+      operator  = "Equal"
+      match_values = ["/"]
+    }
+
+    url_redirect_action {
+      redirect_type = "Found"
+      protocol = "Https"
+    }
+  }
+}
+
+
 
 # Create a virtual network
 resource "azurerm_virtual_network" "vnet" {
