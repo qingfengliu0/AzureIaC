@@ -55,8 +55,8 @@ resource "azurerm_cdn_profile" "resumecdn" {
 }
 
 #Create a CDN Endpoint
-resource "azurerm_cdn_endpoint" "resumecdnendpoint" {
-  name                = "resumecdnendpoint"
+resource "azurerm_cdn_endpoint" "resumecdnendpointqliu" {
+  name                = "resumecdnendpointqliu"
   resource_group_name = azurerm_resource_group.resume.name
   profile_name        = azurerm_cdn_profile.resumecdn.name
   location            = "eastus"
