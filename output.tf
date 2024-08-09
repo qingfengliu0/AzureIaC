@@ -8,5 +8,5 @@ output "public_ip_address" {
 }
 
 output "cdn_endpoint" {
-  value = azurerm_cdn_endpoint.resumecdnendpoint.fqdn
+  value = azurerm_cdn_endpoint.resumecdnendpointqliu.fqdn
 }
