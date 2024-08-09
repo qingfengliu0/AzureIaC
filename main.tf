@@ -178,8 +178,6 @@ resource "cloudflare_record" "cdn-cname-record" {
 # Add a Custom Domain to the CDN Endpoint
 resource "azurerm_cdn_endpoint_custom_domain" "qliu-cdn-domain" {
   name                = "qliu-cdn-domain"
-  resource_group_name = azurerm_resource_group.resume.name
-  profile_name        = azurerm_cdn_profile.resume-cdn-profile.name
   cdn_endpoint_id       = azurerm_cdn_endpoint.resume-cdn-endpoint-qliu.id
   host_name            = var.dns_name # Your custom domain
 
