@@ -49,7 +49,7 @@ resource "azurerm_storage_account" "resumewebstorage" {
 #Create a CDN Profile
 resource "azurerm_cdn_profile" "resumecdn" {
   name                = "resumecdn"
-  location            = azurerm_resource_group.resume.location
+  location            = "eastus"
   resource_group_name = azurerm_resource_group.resume.name
   sku                 = "Standard_Microsoft"
 }
@@ -59,7 +59,7 @@ resource "azurerm_cdn_endpoint" "resumecdnendpoint" {
   name                = "resumecdnendpoint"
   resource_group_name = azurerm_resource_group.resume.name
   profile_name        = azurerm_cdn_profile.resumecdn.name
-  location            = azurerm_resource_group.resume.location
+  location            = "eastus"
   origin_host_header  = azurerm_storage_account.resumewebstorage.primary_blob_endpoint
   origin_path         = "/$web"
   origin {
