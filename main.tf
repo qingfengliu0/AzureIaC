@@ -64,7 +64,7 @@ resource "azurerm_cdn_endpoint" "resumecdnendpoint" {
   origin_path         = "/$web"
   origin {
     name      = "storage-origin"
-    host_name = azurerm_storage_account.resumewebstorage.primary_blob_endpoint
+    host_name = "www.resume.qliu.ca"
   }
 
   is_http_allowed = true
