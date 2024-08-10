@@ -167,10 +167,10 @@ resource "cloudflare_record" "cdn-cname-record" {
 }
 
 # Add a Custom Domain to the CDN Endpoint
-#resource "azurerm_cdn_endpoint_custom_domain" "qliu-cdn-domain" {
-#  name                = "qliu-cdn-domain"
-#  cdn_endpoint_id       = azurerm_cdn_endpoint.resume-cdn-endpoint-qliu.id
-#  host_name            = var.dns_name # Your custom domain
+resource "azurerm_cdn_endpoint_custom_domain" "qliu-cdn-domain" {
+  name                = "qliu-cdn-domain"
+  cdn_endpoint_id       = azurerm_cdn_endpoint.resume-cdn-endpoint-qliu.id
+  host_name            = var.dns_name # Your custom domain
 
   # Azure CDN requires the custom domain to already have a CNAME entry pointing to the CDN endpoint
-#}
+}
