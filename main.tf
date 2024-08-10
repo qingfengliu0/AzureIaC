@@ -158,15 +158,6 @@ provider "cloudflare" {
 }
 
 # Define the DNS record
-resource "cloudflare_record" "a-record" {
-  zone_id = var.cloudflare_zone_id
-  name    = var.dns_name
-  value   = var.dns_value
-  type    = "A"
-  ttl     = 300
-}
-
-# Define the DNS record
 resource "cloudflare_record" "cdn-cname-record" {
   zone_id = var.cloudflare_zone_id
   name    = var.dns_name
