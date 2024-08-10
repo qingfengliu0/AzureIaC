@@ -47,18 +47,18 @@ resource "azurerm_storage_account" "resumewebstorage" {
   }
 }
 #Create a CDN Profile
-resource "azurerm_cdn_profile" "resumecdn" {
-  name                = "resumecdn"
+resource "azurerm_cdn_profile" "resume-cdn-profile" {
+  name                = "resume-cdn-profile"
   location            = "eastus"
   resource_group_name = azurerm_resource_group.resume.name
   sku                 = "Standard_Microsoft"
 }
 
 #Create a CDN Endpoint
-resource "azurerm_cdn_endpoint" "resumecdnendpointqliu" {
-  name                = "resumecdnendpointqliu"
+resource "azurerm_cdn_endpoint" "resume-cdn-endpoint-qliu" {
+  name                = "resume-cdn-endpoint-qliu"
   resource_group_name = azurerm_resource_group.resume.name
-  profile_name        = azurerm_cdn_profile.resumecdn.name
+  profile_name        = azurerm_cdn_profile.resume-cdn-profile.name
   location            = "eastus"
   origin {
     name      = "storage-origin"
@@ -158,10 +158,19 @@ provider "cloudflare" {
 }
 
 # Define the DNS record
-resource "cloudflare_record" "your_domain" {
+resource "cloudflare_record" "cdn-cname-record" {
   zone_id = var.cloudflare_zone_id
   name    = var.dns_name
-  value   = var.dns_value
-  type    = "A"
+  value   = azurerm_cdn_endpoint.resume-cdn-endpoint-qliu.fqdn
+  type    = "CNAME"
   ttl     = 300
+}
+
+# Add a Custom Domain to the CDN Endpoint
+resource "azurerm_cdn_endpoint_custom_domain" "qliu-cdn-domain" {
+  name                = "qliu-cdn-domain"
+  cdn_endpoint_id       = azurerm_cdn_endpoint.resume-cdn-endpoint-qliu.id
+  host_name            = var.dns_name # Your custom domain
+
+  # Azure CDN requires the custom domain to already have a CNAME entry pointing to the CDN endpoint
 }
