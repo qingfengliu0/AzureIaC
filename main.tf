@@ -67,6 +67,7 @@ resource "azurerm_cdn_endpoint" "resume-cdn-endpoint-qliu" {
     https_port = 443
   
   }
+  origin_host_header = azurerm_storage_account.resumewebstorage.primary_web_host
 
   is_http_allowed = true
   is_https_allowed = true
