@@ -68,6 +68,8 @@ resource "azurerm_cdn_endpoint" "resume-cdn-endpoint-qliu" {
   
   }
 
+  origin_path = "/$web"
+
   is_http_allowed = true
   is_https_allowed = true
 
