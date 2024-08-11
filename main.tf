@@ -83,7 +83,7 @@ resource "azurerm_cdn_endpoint" "resume-cdn-endpoint-qliu" {
 
     request_scheme_condition {
       operator     = "Equal"
-      match_values = ["Http"]
+      match_values = ["HTTP"]
     }
 
     url_redirect_action {
