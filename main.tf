@@ -81,12 +81,18 @@ resource "azurerm_cdn_endpoint" "resume-cdn-endpoint-qliu" {
       match_values = ["/"]
     }
 
+    request_scheme_condition {
+      operator     = "Equal"
+      match_values = ["Http"]
+    }
+
     url_redirect_action {
       redirect_type = "Found"
       protocol = "Https"
       hostname = azurerm_storage_account.resumewebstorage.primary_web_host
     }
   }
+  
 }
 
 
