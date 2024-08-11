@@ -62,7 +62,7 @@ resource "azurerm_cdn_endpoint" "resume-cdn-endpoint-qliu" {
   location            = "eastus"
   origin {
     name      = "storage-origin"
-    host_name = azurerm_storage_account.resumewebstorage.primary_blob_endpoint
+    host_name = azurerm_storage_account.resumewebstorage.primary_blob_microsoft_host
     http_port = 80
     https_port = 443
   
