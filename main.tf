@@ -54,7 +54,7 @@ resource "azurerm_cdn_profile" "resume-cdn-profile" {
   sku                 = "Standard_Microsoft"
 }
 
-#Create a CDN Endpoint
+#Create a CDN Endpoint, origin is the web storage endpoint
 resource "azurerm_cdn_endpoint" "resume-cdn-endpoint-qliu" {
   name                = "resume-cdn-endpoint-qliu"
   resource_group_name = azurerm_resource_group.resume.name
@@ -62,7 +62,10 @@ resource "azurerm_cdn_endpoint" "resume-cdn-endpoint-qliu" {
   location            = "eastus"
   origin {
     name      = "storage-origin"
-    host_name = "www.resume.qliu.ca"
+    host_name = azurerm_storage_account.resumewebstorage.primary_blob_host
+    http_port = 80
+    https_port = 443
+  
   }
 
   is_http_allowed = true
