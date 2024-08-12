@@ -188,7 +188,7 @@ resource "azurerm_cdn_endpoint_custom_domain" "qliu-cdn-domain" {
   cdn_managed_https {
     certificate_type = "Shared"
     protocol_type = "ServerNameIndication"
-    tls_version = "TS12"
+    tls_version = "TLS12"
   }
 
 
