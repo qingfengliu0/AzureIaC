@@ -219,16 +219,16 @@ resource "azurerm_cosmosdb_account" "qliudb" {
 #Create the Database 
 resource "azurerm_cosmosdb_mongo_database" "visitor-counter-db" {
   name                = "visitor-counter-db"
-  resource_group_name = data.azurerm_cosmosdb_account.qliudb.resource_group_name
-  account_name        = data.azurerm_cosmosdb_account.qliudb.name
+  resource_group_name = azurerm_resource_group.resume.name
+  account_name        = azurerm_cosmosdb_account.qliudb.name
   throughput          = 400
 }
 
 #Create a container in the database
 resource "azurerm_cosmosdb_sql_container" "visitor-count-container" {
   name                  = "visitor-count-container"
-  resource_group_name   = data.azurerm_cosmosdb_account.resume.resource_group_name
-  account_name          = data.azurerm_cosmosdb_account.qliudbe.name
+  resource_group_name   = azurerm_resource_group.resume.name
+  account_name          = azurerm_cosmosdb_account.qliudbe.name
   database_name         = azurerm_cosmosdb_sql_database.visitor-counter-db.name
   partition_key_path    = "/definition/id"
   partition_key_version = 1
