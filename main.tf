@@ -185,6 +185,12 @@ resource "azurerm_cdn_endpoint_custom_domain" "qliu-cdn-domain" {
   name                = "qliu-cdn-domain"
   cdn_endpoint_id     = azurerm_cdn_endpoint.resume-cdn-endpoint-qliu.id
   host_name           = var.dns_name # Your custom domain
+  cdn_managed_https {
+    certificate_type = "Dedicated"
+    protocol_type = "ServerNameIndication"
+    tls_version = "TLS12"
+  }
+
 
   # Azure CDN requires the custom domain to already have a CNAME entry pointing to the CDN endpoint
 }
