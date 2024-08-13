@@ -228,8 +228,8 @@ resource "azurerm_cosmosdb_mongo_database" "visitor-counter-db" {
 resource "azurerm_cosmosdb_sql_container" "visitor-count-container" {
   name                  = "visitor-count-container"
   resource_group_name   = azurerm_resource_group.resume.name
-  account_name          = azurerm_cosmosdb_account.qliudbe.name
-  database_name         = azurerm_cosmosdb_sql_database.visitor-counter-db.name
+  account_name          = azurerm_cosmosdb_account.qliudb.name
+  database_name         = azurerm_cosmosdb_mongo_database.visitor-counter-db.name
   partition_key_path    = "/definition/id"
   partition_key_version = 1
   throughput            = 400
