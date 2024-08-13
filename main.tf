@@ -194,3 +194,50 @@ resource "azurerm_cdn_endpoint_custom_domain" "qliu-cdn-domain" {
 
   # Azure CDN requires the custom domain to already have a CNAME entry pointing to the CDN endpoint
 }
+#16 creating and configuring the database that record the change. 
+# Create the Azurem database account MongoDB
+resource "azurerm_cosmosdb_account" "qliudb" {
+  name                = "qliudb"
+  location            = azurerm_resource_group.resume.location
+  resource_group_name = azurerm_resource_group.resume.name
+  offer_type          = "Standard"
+  kind                = "MongoDB"
+}
+#Create the Database 
+resource "azurerm_cosmosdb_mongo_database" "visitor-counter-db" {
+  name                = "visitor-counter-db"
+  resource_group_name = data.azurerm_cosmosdb_account.qliudb.resource_group_name
+  account_name        = data.azurerm_cosmosdb_account.qliudb.name
+  throughput          = 400
+}
+
+#Create a container in the database
+resource "azurerm_cosmosdb_sql_container" "visitor-count-container" {
+  name                  = "visitor-count-container"
+  resource_group_name   = data.azurerm_cosmosdb_account.resume.resource_group_name
+  account_name          = data.azurerm_cosmosdb_account.qliudbe.name
+  database_name         = azurerm_cosmosdb_sql_database.visitor-counter-db.name
+  partition_key_path    = "/definition/id"
+  partition_key_version = 1
+  throughput            = 400
+
+  indexing_policy {
+    indexing_mode = "consistent"
+
+    included_path {
+      path = "/*"
+    }
+
+    included_path {
+      path = "/included/?"
+    }
+
+    excluded_path {
+      path = "/excluded/?"
+    }
+  }
+
+  unique_key {
+    paths = ["/definition/idlong", "/definition/idshort"]
+  }
+}
