@@ -63,7 +63,7 @@ resource "azurerm_cdn_endpoint" "resume-cdn-endpoint-qliu" {
   resource_group_name = azurerm_resource_group.resume.name
   profile_name        = azurerm_cdn_profile.resume-cdn-profile.name
   location            = "eastus"
-  origin_path         = "/$web/public"
+  origin_path         = "/public"
   origin {
     name      = "storage-origin"
     host_name = azurerm_storage_account.resumewebstorage.primary_web_host
