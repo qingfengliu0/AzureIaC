@@ -50,7 +50,7 @@ resource "azurerm_cosmosdb_sql_database" "cosmos-sql-db-test" {
   name                = "cosmos-sql-db-test"
   resource_group_name = azurerm_resource_group.rg-qliubackend-test.name
   account_name        = azurerm_cosmosdb_account.cosmos-qliubackend-test.name
-  throughput          = 100
+  throughput          = 400
 }
 
 # Azure Container
