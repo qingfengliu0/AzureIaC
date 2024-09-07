@@ -64,18 +64,19 @@ resource "azurerm_cosmosdb_sql_container" "cosmos-sql-container-test" {
   throughput            = 400
 
   indexing_policy {
-    indexing_mode = "consistent"
+  indexing_mode = "consistent"
 
-    included_path {
-      path = "/id/?"
-    }
-
-    included_path {
-      path = "/visit_count/?"
-    }
-
-    excluded_path {
-      path = "/logs/?"
-    }
+  included_path {
+    path = "/id/*"
   }
+
+  included_path {
+    path = "/visit_count/*"
+  }
+
+  excluded_path {
+    path = "/logs/*"
+  }
+}
+
 }
