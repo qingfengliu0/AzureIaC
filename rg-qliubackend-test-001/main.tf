@@ -3,7 +3,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~> 3.0.2"
+      version = "~> 4.1.0"
     }
     cloudflare = {
       source = "cloudflare/cloudflare"
@@ -59,7 +59,7 @@ resource "azurerm_cosmosdb_sql_container" "cosmos-sql-container-test" {
   resource_group_name   = azurerm_resource_group.rg-qliubackend-test.name
   account_name          = azurerm_cosmosdb_account.cosmos-qliubackend-test.name
   database_name         = azurerm_cosmosdb_sql_database.cosmos-sql-db-test.name
-  partition_key_path   = ["/id"]
+  partition_key_paths   = ["/id"]
   partition_key_version = 1
   throughput            = 400
 
