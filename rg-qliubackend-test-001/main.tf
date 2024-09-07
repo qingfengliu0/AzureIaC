@@ -10,6 +10,13 @@ terraform {
       version = "4.35.0"
     }
   }
+  backend "azurerm" {
+    resource_group_name   = "atlantis-resource-group"
+    storage_account_name  = "qliuatlantisstorage" # Ensure this follows Azure naming conventions
+    container_name        = "qliutfstatecontainer"
+    key                   = "rg-qliubackend.tfstate"
+  }
+
   required_version = ">= 1.1.0"
 }
 
@@ -62,21 +69,5 @@ resource "azurerm_cosmosdb_sql_container" "cosmos-sql-container-test" {
   partition_key_paths   = ["/id"]
   partition_key_version = 1
   throughput            = 400
-
-  indexing_policy {
-  indexing_mode = "consistent"
-
-  included_path {
-    path = "/id/*"
-  }
-
-  included_path {
-    path = "/visit_count/*"
-  }
-
-  excluded_path {
-    path = "/logs/*"
-  }
-}
 
 }
