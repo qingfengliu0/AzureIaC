@@ -78,32 +78,7 @@ resource "azurerm_log_analytics_workspace" "log-recordvisit-test" {
   retention_in_days   = 30
 }
 
-# resource "azurerm_application_insights" "appi-recordvisit-test" {
-#   name                = "appi-recordvisit-test"
-#   location            = azurerm_resource_group.rg-qliuapi-test.location
-#   resource_group_name = azurerm_resource_group.rg-qliuapi-test.name
-#   workspace_id = azurerm_log_analytics_workspace.log-recordvisit-test.id
 
-#   application_type = "web"
-# }
-
-# resource "azurerm_application_insights_smart_detection_rule" "alert-recordvisit-failedtorespond-test" {
-#   name                    = "Slow page load time"
-#   application_insights_id = azurerm_application_insights.appi-recordvisit-test.id
-#   enabled                 = false
-# }
-
-# resource "azurerm_application_insights_smart_detection_rule" "alert-recordvisit-highdelayresponse-test" {
-#   name                    = "Slow server response time"
-#   application_insights_id = azurerm_application_insights.appi-recordvisit-test.id
-#   enabled                 = false
-# }
-
-# resource "azurerm_application_insights_smart_detection_rule" "alert-recordvisit-dosattack-test" {
-#   name                    = "Potential security issue detected"
-#   application_insights_id = azurerm_application_insights.appi-recordvisit-test.id
-#   enabled                 = false
-# }
 
 resource "azurerm_monitor_action_group" "ag-qliuapi-test" {
   name                = "ag-qliuapi-test"
@@ -113,4 +88,31 @@ resource "azurerm_monitor_action_group" "ag-qliuapi-test" {
     name = "admin"
     email_address = "steven@qliu.ca"
   }
+}
+
+resource "azurerm_application_insights" "appi-recordvisit-test" {
+  name                = "appi-recordvisit-test"
+  location            = azurerm_resource_group.rg-qliuapi-test.location
+  resource_group_name = azurerm_resource_group.rg-qliuapi-test.name
+  workspace_id = azurerm_log_analytics_workspace.log-recordvisit-test.id
+
+  application_type = "web"
+}
+
+resource "azurerm_application_insights_smart_detection_rule" "alert-recordvisit-failedtorespond-test" {
+  name                    = "Slow page load time"
+  application_insights_id = azurerm_application_insights.appi-recordvisit-test.id
+  enabled                 = true
+}
+
+resource "azurerm_application_insights_smart_detection_rule" "alert-recordvisit-highdelayresponse-test" {
+  name                    = "Slow server response time"
+  application_insights_id = azurerm_application_insights.appi-recordvisit-test.id
+  enabled                 = true
+}
+
+resource "azurerm_application_insights_smart_detection_rule" "alert-recordvisit-dosattack-test" {
+  name                    = "Potential security issue detected"
+  application_insights_id = azurerm_application_insights.appi-recordvisit-test.id
+  enabled                 = true
 }
