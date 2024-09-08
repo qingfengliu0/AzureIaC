@@ -34,15 +34,13 @@ resource "azurerm_resource_group" "rg-qliuapi-test" {
 }
 
 #prequsite for function app, one to many
-resource "azurerm_app_service_plan" "asp-qliuapi-test" {
+resource "azurerm_service_plan" "asp-qliuapi-test" {
   name                = "asp-qliuapi-test"
   location            = azurerm_resource_group.rg-qliuapi-test.location
   resource_group_name = azurerm_resource_group.rg-qliuapi-test.name
 
-  sku {
-    tier = "Free"
-    size = "F1"
-  }
+  os_type             = "Linux"
+  sku_name            = "Y1"
 }
 #storage account for the function apps
 resource "azurerm_storage_account" "stqliuapi" {
