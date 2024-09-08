@@ -104,3 +104,13 @@ resource "azurerm_application_insights_smart_detection_rule" "alert-recordvisit-
   application_insights_id = azurerm_application_insights.appi-recordvisit-test.id
   enabled                 = false
 }
+
+resource "azurerm_monitor_action_group" "ag-qliuapi-test" {
+  name                = "ag-qliuapi-test"
+  resource_group_name = azurerm_resource_group.rg-qliuapi-test.name
+  short_name          = "Record Visit Alert"
+  email_receiver{
+    name = "admin"
+    email_address = "steven@qliu.ca"
+  }
+}
