@@ -56,12 +56,51 @@ resource "azurerm_storage_account" "stqliuapi" {
   }
 }
 
-#funciton app
-resource "azurerm_function_app" "func-recordvisit-test" {
+resource "azurerm_linux_function_app" "func-recordvisit-test" {
   name                       = "func-recordvisit-test"
   location                   = azurerm_resource_group.rg-qliuapi-test.location
   resource_group_name        = azurerm_resource_group.rg-qliuapi-test.name
-  app_service_plan_id        = azurerm_service_plan.asp-qliuapi-test.id
-  storage_account_name       = azurerm_storage_account.stqliuapi.name
+  service_plan_id        = azurerm_service_plan.asp-qliuapi-test.id
+  storage_account_name = azurerm_storage_account.stqliuapi.name
   storage_account_access_key = azurerm_storage_account.stqliuapi.primary_access_key
+
+  site_config {}
+
+  identity {
+    type = "SystemAssigned"
+  }
+}
+
+resource "azurerm_log_analytics_workspace" "log-recordvisit-test" {
+  name                = "log-recordvisit-test"
+  location            = azurerm_resource_group.rg-qliuapi-test.location
+  resource_group_name = azurerm_resource_group.rg-qliuapi-test.name
+  retention_in_days   = 30
+}
+
+resource "azurerm_application_insights" "appi-recordvisit-test" {
+  name                = "appi-recordvisit-test"
+  location            = azurerm_resource_group.rg-qliuapi-test.location
+  resource_group_name = azurerm_resource_group.rg-qliuapi-test.name
+  workspace_id = azurerm_log_analytics_workspace.log-recordvisit-test.id
+
+  application_type = "web"
+}
+
+resource "azurerm_application_insights_smart_detection_rule" "alert-recordvisit-failedtorespond-test" {
+  name                    = "Resource Failed to Respond"
+  application_insights_id = azurerm_application_insights.appi-recordvisit-test.id
+  enabled                 = false
+}
+
+resource "azurerm_application_insights_smart_detection_rule" "alert-recordvisit-highdelayresponse-test" {
+  name                    = "Slow server response time"
+  application_insights_id = azurerm_application_insights.appi-recordvisit-test.id
+  enabled                 = false
+}
+
+resource "azurerm_application_insights_smart_detection_rule" "alert-recordvisit-dosattack-test" {
+  name                    = "Possible DOS Attack"
+  application_insights_id = azurerm_application_insights.appi-recordvisit-test.id
+  enabled                 = false
 }
