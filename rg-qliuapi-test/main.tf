@@ -61,7 +61,7 @@ resource "azurerm_function_app" "func-recordvisit-test" {
   name                       = "func-recordvisit-test"
   location                   = azurerm_resource_group.rg-qliuapi-test.location
   resource_group_name        = azurerm_resource_group.rg-qliuapi-test.name
-  app_service_plan_id        = azurerm_app_service_plan.asp-qliuapi-test.id
+  app_service_plan_id        = azurerm_service_plan.asp-qliuapi-test.id
   storage_account_name       = azurerm_storage_account.stqliuapi.name
   storage_account_access_key = azurerm_storage_account.stqliuapi.primary_access_key
 }
