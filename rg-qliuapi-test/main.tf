@@ -88,7 +88,7 @@ resource "azurerm_application_insights" "appi-recordvisit-test" {
 }
 
 resource "azurerm_application_insights_smart_detection_rule" "alert-recordvisit-failedtorespond-test" {
-  name                    = "Resource Failed to Respond"
+  name                    = "Slow page load time"
   application_insights_id = azurerm_application_insights.appi-recordvisit-test.id
   enabled                 = false
 }
@@ -100,7 +100,7 @@ resource "azurerm_application_insights_smart_detection_rule" "alert-recordvisit-
 }
 
 resource "azurerm_application_insights_smart_detection_rule" "alert-recordvisit-dosattack-test" {
-  name                    = "Possible DOS Attack"
+  name                    = "Potential security issue detected"
   application_insights_id = azurerm_application_insights.appi-recordvisit-test.id
   enabled                 = false
 }
