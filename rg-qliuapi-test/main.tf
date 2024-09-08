@@ -87,20 +87,20 @@ resource "azurerm_application_insights" "appi-recordvisit-test" {
   application_type = "web"
 }
 
-resource "azurerm_application_insights_smart_detection_rule" "alert-recordvisit-failedtorespond-test" {
-  name                    = "Slow page load time"
-  application_insights_id = azurerm_application_insights.appi-recordvisit-test.id
-  enabled                 = false
-}
+# resource "azurerm_application_insights_smart_detection_rule" "alert-recordvisit-failedtorespond-test" {
+#   name                    = "Slow page load time"
+#   application_insights_id = azurerm_application_insights.appi-recordvisit-test.id
+#   enabled                 = false
+# }
 
-resource "azurerm_application_insights_smart_detection_rule" "alert-recordvisit-highdelayresponse-test" {
-  name                    = "Slow server response time"
-  application_insights_id = azurerm_application_insights.appi-recordvisit-test.id
-  enabled                 = false
-}
+# resource "azurerm_application_insights_smart_detection_rule" "alert-recordvisit-highdelayresponse-test" {
+#   name                    = "Slow server response time"
+#   application_insights_id = azurerm_application_insights.appi-recordvisit-test.id
+#   enabled                 = false
+# }
 
-resource "azurerm_application_insights_smart_detection_rule" "alert-recordvisit-dosattack-test" {
-  name                    = "Potential security issue detected"
-  application_insights_id = azurerm_application_insights.appi-recordvisit-test.id
-  enabled                 = false
-}
+# resource "azurerm_application_insights_smart_detection_rule" "alert-recordvisit-dosattack-test" {
+#   name                    = "Potential security issue detected"
+#   application_insights_id = azurerm_application_insights.appi-recordvisit-test.id
+#   enabled                 = false
+# }
