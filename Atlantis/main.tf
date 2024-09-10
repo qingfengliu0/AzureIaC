@@ -38,8 +38,8 @@ resource "azurerm_storage_account" "qliuatlantisstorage" {
   account_replication_type = "LRS"
 }
 
-resource "azurerm_key_vault" "qliuatlantisKeyVault2" {
-  name                        = "qliuatlantisKeyVault2"
+resource "azurerm_key_vault" "qliuatlantisKeyVault" {
+  name                        = "qliuatlantisKeyVault"
   location                    = azurerm_resource_group.atlantis_rg.location
   resource_group_name         = azurerm_resource_group.atlantis_rg.name
   sku_name                    = "standard"
