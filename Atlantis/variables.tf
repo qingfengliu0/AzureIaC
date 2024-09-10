@@ -14,7 +14,7 @@ variable "admin_username" {
 variable "tenant_id" {
   description = "tenant id"
   type        = string
-  sensitive   = false
+  sensitive   = true
   default     = "5caffd0a-25ae-4d12-a6e2-6646216cf62e"
 }
 

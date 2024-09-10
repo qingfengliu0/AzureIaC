@@ -43,7 +43,7 @@ resource "azurerm_key_vault" "qliuatlantisKeyVault" {
   location                    = azurerm_resource_group.atlantis_rg.location
   resource_group_name         = azurerm_resource_group.atlantis_rg.name
   sku_name                    = "standard"
-  tenant_id                   = var.tenant_id
+  tenant_id                   = data.azurerm_client_config.current.tenant_id
   soft_delete_retention_days  = 90
   purge_protection_enabled    = true
 }
