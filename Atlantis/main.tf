@@ -38,16 +38,6 @@ resource "azurerm_storage_account" "qliuatlantisstorage" {
   account_replication_type = "LRS"
 }
 
-resource "azurerm_key_vault" "qliuatlantisKeyVault" {
-  name                        = "qliuatlantisKeyVault"
-  location                    = azurerm_resource_group.atlantis_rg.location
-  resource_group_name         = azurerm_resource_group.atlantis_rg.name
-  sku_name                    = "standard"
-  tenant_id                   = data.azurerm_client_config.current.tenant_id
-  soft_delete_retention_days  = 90
-  purge_protection_enabled    = true
-}
-
 # Create a Storage Container
 resource "azurerm_storage_container" "qliutfstatecontainer" {
   name                  = "qliutfstatecontainer"
