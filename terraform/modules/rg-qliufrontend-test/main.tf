@@ -3,7 +3,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~> 3.0.2"
+      version = "~> 4.1.0"
     }
     cloudflare = {
       source = "cloudflare/cloudflare"
@@ -23,6 +23,7 @@ terraform {
 provider "azurerm" {
   features {}
 }
+
 
 resource "azurerm_resource_group" "resume" {
   name     = var.resource_group_name
