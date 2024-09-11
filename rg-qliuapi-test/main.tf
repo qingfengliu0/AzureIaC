@@ -63,11 +63,23 @@ resource "azurerm_linux_function_app" "func-recordvisit-test" {
   service_plan_id        = azurerm_service_plan.asp-qliuapi-test.id
   storage_account_name = azurerm_storage_account.stqliuapi.name
   storage_account_access_key = azurerm_storage_account.stqliuapi.primary_access_key
+  
+  site_config {
 
-  site_config {}
 
+  }
+  
+  app_settings = {
+    "FUNCTIONS_WORKER_RUNTIME" = "python"
+    "WEBSITE_RUN_FROM_PACKAGE" = "1"       # Use package deployment method
+  }
+  
   identity {
     type = "SystemAssigned"
+  }
+  
+  tags = {
+    Environment = "Development"
   }
 }
 
