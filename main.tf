@@ -27,8 +27,7 @@ provider "azurerm" {
 
 module "frontend" {
   source      = "./modules/rg-qliufrontend-test"
-  admin_password = var.admin_password
-  cloudflare_api_key = var.cloudflare_api_key
+  
 }
 
 module "backend" {
@@ -41,5 +40,4 @@ module "api" {
 
 module "api" {
   source     = "./modules/rg-qliuatlantis-test"
-  admin_password = var.admin_password
 }
