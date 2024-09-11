@@ -71,9 +71,3 @@ resource "azurerm_cosmosdb_sql_container" "cosmos-sql-container-test" {
   throughput            = 400
 
 }
-#store the key into the key vault - prequestist is the vault has to exit first
-resource "azurerm_key_vault_secret" "CosmosDBConnection" {
-  name         = "CosmosDBConnection"
-  value        = azurerm_cosmosdb_account.cosmos-sql-db-test.connection_strings[0]
-  key_vault_id = azurerm_key_vault.kv-qliumain-test.id
-}
