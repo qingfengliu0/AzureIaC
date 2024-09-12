@@ -29,6 +29,7 @@ variable "cloudflare_email" {
 variable "cloudflare_api_key" {
   description = "Cloudflare API key"
   type        = string
+  default = getenv("TF_VAR_cloudflare_api_key",null)
   sensitive   = true
 }
 
