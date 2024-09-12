@@ -5,6 +5,11 @@ terraform {
       source  = "hashicorp/azurerm"
       version = "~> 4.1.0"
     }
+     cloudflare = {
+      source = "cloudflare/cloudflare"
+      version = "4.35.0"
+    }
+    
     
   }
   backend "azurerm" {
@@ -21,7 +26,10 @@ provider "azurerm" {
   features {}
 }
 # Configure the Cloudflare provider
-
+provider "cloudflare" {
+  email   = var.cloudflare_email
+  api_key = var.cloudflare_api_key
+}
 
 module "rg-qliufrontend-test" {
   source = "./modules/rg-qliufrontend-test"
