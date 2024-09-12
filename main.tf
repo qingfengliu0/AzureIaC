@@ -12,11 +12,12 @@ terraform {
     
     
   }
-  backend "azurerm" {
-    resource_group_name   = "resume"
-    storage_account_name  = "qliustorage" # Ensure this follows Azure naming conventions
-    container_name        = "terraformstate"
-    key                   = "terraform.tfstate"
+
+backend "azurerm" {
+    resource_group_name   = "atlantis-resource-group"
+    storage_account_name  = "qliuatlantisstorage" # Ensure this follows Azure naming conventions
+    container_name        = "qliutfstatecontainer"
+    key                   = "rg-frontend.tfstate"
   }
 
   required_version = ">= 1.1.0"

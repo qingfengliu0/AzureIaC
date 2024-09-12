@@ -11,22 +11,13 @@ terraform {
     
   }
 }
-
-provider "azurerm"{
-  features{
-        resource_group {
-            prevent_deletion_if_contains_resources = false
-        }
-  }
-}
-
 provider "cloudflare" {
   email   = var.cloudflare_email
   api_key = var.cloudflare_api_key
 }
 
-resource "azurerm_resource_group" "resume" {
-  name     = var.resource_group_name
+resource "azurerm_resource_group" "rg-qliufrontend-test" {
+  name     = "rg-qliufrontend-test"
   location = var.location
   tags = {
     Environment = "developing IaC for resume website"
@@ -34,7 +25,7 @@ resource "azurerm_resource_group" "resume" {
   }
 }
 #Create a Blob Storage for holding the static code
-resource "azurerm_storage_account" "resumewebstorage" {
+resource "azurerm_storage_account" "st-qliufrontend-test" {
   name                     = "resumewebstorage"
   resource_group_name      = azurerm_resource_group.resume.name
   location                 = azurerm_resource_group.resume.location
@@ -47,16 +38,16 @@ resource "azurerm_storage_account" "resumewebstorage" {
   }
 }
 #Create a CDN Profile
-resource "azurerm_cdn_profile" "resume-cdn-profile" {
-  name                = "resume-cdn-profile"
+resource "azurerm_cdn_profile" "cdnp-qliufrontend-test" {
+  name                = "cdnp-qliufrontend-test"
   location            = "eastus"
   resource_group_name = azurerm_resource_group.resume.name
   sku                 = "Standard_Microsoft"
 }
 
 #Create a CDN Endpoint, origin is the web storage endpoint
-resource "azurerm_cdn_endpoint" "resume-cdn-endpoint-qliu" {
-  name                = "resume-cdn-endpoint-qliu"
+resource "azurerm_cdn_endpoint" "cdne-qliufrontend-test" {
+  name                = "cdne-qliufrontend-test"
   resource_group_name = azurerm_resource_group.resume.name
   profile_name        = azurerm_cdn_profile.resume-cdn-profile.name
   location            = "eastus"
@@ -97,7 +88,7 @@ resource "azurerm_cdn_endpoint" "resume-cdn-endpoint-qliu" {
 }
 
 # Define the DNS record
-resource "cloudflare_record" "cdn-cname-record" {
+resource "cloudflare_record" "dns-qliufrontend-test" {
   zone_id = var.cloudflare_zone_id
   name    = var.dns_name
   value   = azurerm_cdn_endpoint.resume-cdn-endpoint-qliu.fqdn
@@ -106,7 +97,7 @@ resource "cloudflare_record" "cdn-cname-record" {
 }
 
 # Add a Custom Domain to the CDN Endpoint
-resource "azurerm_cdn_endpoint_custom_domain" "qliu-cdn-domain" {
+resource "azurerm_cdn_endpoint_custom_domain" "domain-qliufrontend-test" {
   name                = "qliu-cdn-domain"
   cdn_endpoint_id     = azurerm_cdn_endpoint.resume-cdn-endpoint-qliu.id
   host_name           = var.dns_name # Your custom domain
