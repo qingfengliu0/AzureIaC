@@ -73,11 +73,6 @@ resource "azurerm_cdn_endpoint" "resume-cdn-endpoint-qliu" {
   }
   
 }
-# Configure the Cloudflare provider
-provider "cloudflare" {
-  email   = var.cloudflare_email
-  api_key = var.cloudflare_api_key
-}
 
 # Define the DNS record
 resource "cloudflare_record" "cdn-cname-record" {
