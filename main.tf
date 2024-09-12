@@ -21,7 +21,10 @@ provider "azurerm" {
   features {}
 }
 # Configure the Cloudflare provider
-
+provider "cloudflare" {
+  email   = var.cloudflare_email
+  api_key = var.cloudflare_api_key
+}
 
 module "rg-qliufrontend-test" {
   source = "./modules/rg-qliufrontend-test"
