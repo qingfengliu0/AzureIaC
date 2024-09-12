@@ -1,4 +1,9 @@
 
+provider "cloudflare" {
+  email   = var.cloudflare_email
+  api_key = var.cloudflare_api_key
+}
+
 resource "azurerm_resource_group" "resume" {
   name     = var.resource_group_name
   location = var.location
