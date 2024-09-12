@@ -26,5 +26,5 @@ provider "azurerm" {
 module "rg-qliufrontend-test" {
   source = "./modules/rg-qliufrontend-test"
   admin_password = var.admin_password
-  cloudflare_api_key = var.cloudflare_api_key
+  cloudflare_api_key = getenv("TF_VAR_cloudflare_api_key",null)
 }
