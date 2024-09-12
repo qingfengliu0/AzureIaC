@@ -33,9 +33,6 @@ resource "azurerm_storage_account" "resumewebstorage" {
   location                 = azurerm_resource_group.resume.location
   account_tier             = "Standard"
   account_replication_type = "LRS"
-
-  # Disable secure transfer required
-  enable_https_traffic_only = false
   
   static_website {
     index_document     = "index.html"
