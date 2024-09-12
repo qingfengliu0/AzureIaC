@@ -5,10 +5,7 @@ terraform {
       source  = "hashicorp/azurerm"
       version = "~> 4.1.0"
     }
-    cloudflare = {
-      source = "cloudflare/cloudflare"
-      version = "4.35.0"
-    }
+    
   }
   backend "azurerm" {
     resource_group_name   = "resume"
@@ -28,7 +25,4 @@ provider "azurerm" {
 
 module "rg-qliufrontend-test" {
   source = "./modules/rg-qliufrontend-test"
-  providers = {
-    cloudflare = cloudflare
-  }
 }
