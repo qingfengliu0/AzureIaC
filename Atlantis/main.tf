@@ -76,6 +76,20 @@ resource "azurerm_network_security_group" "atlantis_nsg" {
     source_address_prefix      = "*"
     destination_address_prefix = "*"
   }
+  security_rule {
+      name                       = "allow_ssh"
+      priority                   = 1002
+      direction                  = "Inbound"
+      access                     = "Allow"
+      protocol                   = "Tcp"
+      source_port_range          = "*"
+      destination_port_range     = "22"
+      source_address_prefix      = "*"
+      destination_address_prefix = "*"
+    }
+
+
+
 }
 resource "azurerm_public_ip" "atlantis_ip" {
   name                = "atlantis_ip"
