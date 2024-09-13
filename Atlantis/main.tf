@@ -76,26 +76,12 @@ resource "azurerm_network_security_group" "atlantis_nsg" {
     source_address_prefix      = "*"
     destination_address_prefix = "*"
   }
-  security_rule {
-      name                       = "allow_ssh"
-      priority                   = 1002
-      direction                  = "Inbound"
-      access                     = "Allow"
-      protocol                   = "Tcp"
-      source_port_range          = "*"
-      destination_port_range     = "22"
-      source_address_prefix      = "*"
-      destination_address_prefix = "*"
-    }
-
-
-
 }
 resource "azurerm_public_ip" "atlantis_ip" {
   name                = "atlantis_ip"
   location            = azurerm_resource_group.atlantis_rg.location
   resource_group_name = azurerm_resource_group.atlantis_rg.name
-  allocation_method   = "Dynamic"
+  allocation_method   = "Static"
 }
 
 resource "azurerm_network_interface" "atlantis_nic" {
@@ -115,7 +101,7 @@ resource "azurerm_linux_virtual_machine" "atlantis_vm" {
   name                = "atlantis-vm"
   resource_group_name = azurerm_resource_group.atlantis_rg.name
   location            = azurerm_resource_group.atlantis_rg.location
-  size                = "Standard_B1s"
+  size                = "Standard_B1ls"
 
   admin_username = var.admin_username
   admin_password = var.admin_password
