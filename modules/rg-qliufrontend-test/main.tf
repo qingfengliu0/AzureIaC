@@ -8,6 +8,10 @@ terraform {
       source = "cloudflare/cloudflare"
       version = "4.35.0"
     }
+     time = {
+      source = "hashicorp/time"
+      version = "~> 0.7.0"
+    }
   }
 }
 
@@ -100,6 +104,10 @@ resource "cloudflare_record" "dns-qliufrontend-test" {
   value   = azurerm_cdn_endpoint.cdne-qliufrontend-test.fqdn # Use .hostname instead of .fqdn
   type    = "CNAME"
   ttl     = 300
+}
+
+resource "time_sleep" "wait_60_seconds" {
+  create_duration = "60s" # Wait for 60 seconds
 }
 
 # Add a Custom Domain to the CDN Endpoint
