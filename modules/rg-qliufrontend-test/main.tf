@@ -107,7 +107,7 @@ resource "cloudflare_record" "dns-qliufrontend-test" {
 }
 
 resource "time_sleep" "wait_60_seconds" {
-  create_duration = "60s" # Wait for 60 seconds
+  create_duration = "300s" # Wait for 60 seconds
 }
 
 # Add a Custom Domain to the CDN Endpoint
