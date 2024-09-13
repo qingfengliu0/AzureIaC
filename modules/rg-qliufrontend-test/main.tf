@@ -97,7 +97,7 @@ resource "azurerm_cdn_endpoint" "cdne-qliufrontend-test" {
 resource "cloudflare_record" "dns-qliufrontend-test" {
   zone_id = var.cloudflare_zone_id
   name    = var.dns_name
-  value   = azurerm_cdn_endpoint.cdne-qliufrontend-test.hostname # Use .hostname instead of .fqdn
+  value   = azurerm_cdn_endpoint.cdne-qliufrontend-test.fqdn # Use .hostname instead of .fqdn
   type    = "CNAME"
   ttl     = 300
 }
