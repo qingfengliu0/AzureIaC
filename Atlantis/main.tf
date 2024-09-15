@@ -101,7 +101,7 @@ resource "azurerm_linux_virtual_machine" "atlantis_vm" {
   name                = "atlantis-vm"
   resource_group_name = azurerm_resource_group.atlantis_rg.name
   location            = azurerm_resource_group.atlantis_rg.location
-  size                = "Standard_B1ls"
+  size                = "Standard_B1s"
 
   admin_username = var.admin_username
   admin_password = var.admin_password
