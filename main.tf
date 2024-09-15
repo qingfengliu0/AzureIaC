@@ -37,3 +37,8 @@ module "rg-qliufrontend-test" {
   admin_password = var.admin_password
   cloudflare_api_key = var.cloudflare_api_key
 }
+
+
+module "rg-qliubackend-test" {
+  source = "./modules/rg-qliubackend-test"
+}
