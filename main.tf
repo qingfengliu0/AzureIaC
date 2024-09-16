@@ -42,3 +42,7 @@ module "rg-qliufrontend-test" {
 module "rg-qliubackend-test" {
   source = "./modules/rg-qliubackend-test"
 }
+
+module "rg-qliuapi-test" {
+  source = "./modules/rg-qliuapi-test"
+}
