@@ -71,7 +71,7 @@ resource "azurerm_linux_function_app" "func-recordvisit-test" {
 
   connection_string {
     name = "comsmos-container-connection"
-    value = azurerm_cosmosdb_sql_container.cosmos-sql-container-test.connection_string[0]
+    value = var.db_connectionstring
     type= "normal"
   }
   
