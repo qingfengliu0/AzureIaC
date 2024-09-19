@@ -72,7 +72,7 @@ resource "azurerm_linux_function_app" "func-recordvisit-test" {
   connection_string {
     name = "comsmos-container-connection"
     value = var.db_connectionstring
-    type= "custom"
+    type= "Custom"
   }
   
   identity {
