@@ -66,11 +66,19 @@ resource "azurerm_linux_function_app" "func-recordvisit-test" {
   app_settings = {
     "FUNCTIONS_WORKER_RUNTIME" = "python"
     "WEBSITE_RUN_FROM_PACKAGE" = "1"       # Use package deployment method
+
+  }
+
+  connection_string {
+    name = "comsmos-container-connection"
+    value = var.db_connectionstring
+    type= "Custom"
   }
   
   identity {
     type = "SystemAssigned"
   }
+
   
   tags = {
     Environment = "Development"
