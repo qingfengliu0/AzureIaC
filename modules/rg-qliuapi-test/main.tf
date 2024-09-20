@@ -59,7 +59,9 @@ resource "azurerm_linux_function_app" "func-recordvisit-test" {
   storage_account_access_key = azurerm_storage_account.stqliuapi.primary_access_key
   
   site_config {
-
+    cors{
+    allowed_origins = "https://portal.azure.com"
+    }
 
   }
   
@@ -68,6 +70,8 @@ resource "azurerm_linux_function_app" "func-recordvisit-test" {
     "WEBSITE_RUN_FROM_PACKAGE" = "1"       # Use package deployment method
 
   }
+
+
 
   connection_string {
     name = "comsmos-container-connection"
