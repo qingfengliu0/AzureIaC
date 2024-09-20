@@ -134,3 +134,9 @@ resource "azurerm_application_insights_smart_detection_rule" "alert-recordvisit-
   application_insights_id = azurerm_application_insights.appi-recordvisit-test.id
   enabled                 = true
 }
+
+resource "azurerm_user_assigned_identity" "usi-githubaction" {
+  location            = azurerm_resource_group.rg-qliuapi-test.location
+  name                = "usi-githubaction"
+  resource_group_name = azurerm_resource_group.rg-qliuapi-test.name
+}
