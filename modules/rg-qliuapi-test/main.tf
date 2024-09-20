@@ -62,12 +62,12 @@ resource "azurerm_linux_function_app" "func-recordvisit-test" {
     cors{
     allowed_origins = ["https://portal.azure.com"]
     }
-
-  }
-
-  application_stack {
+   application_stack {
     python_version = "3.11"
   }
+  }
+
+ 
   
   app_settings = {
     "FUNCTIONS_WORKER_RUNTIME" = "python"
