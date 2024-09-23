@@ -60,7 +60,7 @@ resource "azurerm_linux_function_app" "func-recordvisit-test" {
   
   site_config {
     cors{
-    allowed_origins = ["https://portal.azure.com"]
+    allowed_origins = ["https://portal.azure.com", "https://resume.qliu.ca"]
     }
    application_stack {
     python_version = "3.11"
