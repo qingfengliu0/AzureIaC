@@ -1,4 +1,4 @@
-#main
+#main configuration
 terraform {
   required_providers {
     azurerm = {
