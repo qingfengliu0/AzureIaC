@@ -1,2 +1,2 @@
 [atlantis_server]
-atlantis_server ansible_host=13.82.62.122 ansible_user=domainadmin ansible_ssh_private_key_file=~/.ssh/atlantis
+atlantis_server ansible_host=192.168.1.226 ansible_user=steven ansible_ssh_private_key_file=~/.ssh/atlantis ansible_python_interpreter=/usr/bin/python3
