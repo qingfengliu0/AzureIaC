@@ -97,37 +97,37 @@ resource "azurerm_network_interface" "atlantis_nic" {
   }
 
 }
-resource "azurerm_linux_virtual_machine" "atlantis_vm" {
-  name                = "atlantis-vm"
-  resource_group_name = azurerm_resource_group.atlantis_rg.name
-  location            = azurerm_resource_group.atlantis_rg.location
-  size                = "Standard_B1s"
+# resource "azurerm_linux_virtual_machine" "atlantis_vm" {
+#   name                = "atlantis-vm"
+#   resource_group_name = azurerm_resource_group.atlantis_rg.name
+#   location            = azurerm_resource_group.atlantis_rg.location
+#   size                = "Standard_B1s"
 
-  admin_username = var.admin_username
-  admin_password = var.admin_password
+#   admin_username = var.admin_username
+#   admin_password = var.admin_password
 
-  network_interface_ids = [
-    azurerm_network_interface.atlantis_nic.id,
-  ]
-  admin_ssh_key {
-    username   = "domainadmin"
-    public_key = file("atlantis.pub") # Ensure this path is correct
-  }
+#   network_interface_ids = [
+#     azurerm_network_interface.atlantis_nic.id,
+#   ]
+#   admin_ssh_key {
+#     username   = "domainadmin"
+#     public_key = file("atlantis.pub") # Ensure this path is correct
+#   }
 
 
-  os_disk {
-    caching              = "ReadWrite"
-    storage_account_type = "Standard_LRS"
-  }
+#   os_disk {
+#     caching              = "ReadWrite"
+#     storage_account_type = "Standard_LRS"
+#   }
 
-  source_image_reference {
-    publisher = "Canonical"
-    offer     = "UbuntuServer"
-    sku       = "18.04-LTS"
-    version   = "latest"
-  }
+#   source_image_reference {
+#     publisher = "Canonical"
+#     offer     = "UbuntuServer"
+#     sku       = "18.04-LTS"
+#     version   = "latest"
+#   }
 
-}
+# }
 
 resource "azurerm_key_vault" "kv-qliumain-test" {
   name                        = "kv-qliumain-test"
