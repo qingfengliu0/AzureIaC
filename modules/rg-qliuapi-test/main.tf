@@ -20,7 +20,7 @@ provider "azurerm" {
 
 resource "azurerm_resource_group" "rg-qliuapi-test" {
   name     = "rg-qliuapi-test"
-  location = "westus2"
+  location = var.location
 
   tags = {
     Environment = "Development"
@@ -144,4 +144,59 @@ resource "azurerm_user_assigned_identity" "usi-githubaction" {
   location            = azurerm_resource_group.rg-qliuapi-test.location
   name                = "usi-githubaction"
   resource_group_name = azurerm_resource_group.rg-qliuapi-test.name
+}
+
+
+resource "azurerm_monitor_diagnostic_setting" "diagsetting-recordvisit-test" {
+  name                       = "recordvisit-diag"
+  target_resource_id         = azurerm_linux_function_app.func-recordvisit-test.id
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.log-recordvisit-test.id
+
+  enabled_log {
+    category = "FunctionAppLogs"
+  }
+    metric {
+    category = "AllMetrics"
+    enabled  = true
+  }
+}
+
+resource "azurerm_monitor_scheduled_query_rules_alert" "alert-recordvisit-ddos_detection-test" {
+  name                = "ddos-detection-alert"
+  location            = azurerm_resource_group.rg-qliuapi-test.location
+  resource_group_name = azurerm_resource_group.rg-qliuapi-test.name
+
+  data_source_id = azurerm_application_insights.appi-recordvisit-test.id
+  description    = "Alert when a single IP sends 20+ requests in 5 seconds"
+  enabled        = true
+
+  query = <<-KQL
+    requests
+    | where timestamp > ago(1m)
+    | summarize requestCount = count() by client_IP
+    | where requestCount >= 20
+  KQL
+
+  severity    = 1
+  frequency   = 1     # Evaluate every 1 minute
+  time_window = 1     # Look at the last 1 minute of data (comment fixed)
+
+  trigger {
+    operator  = "GreaterThan"
+    threshold = 0      # Alert if any IP exceeds the threshold
+  }
+
+  action {
+    action_group           = [azurerm_monitor_action_group.ag-qliuapi-test.id]
+    email_subject          = "DDoS Detection Alert"
+    custom_webhook_payload = jsonencode({
+      alertType = "BurstTraffic"
+      message   = "20+ requests in 5s from one IP"
+    })
+  }
+
+  tags = {
+    environment = "production"
+    type        = "ddos-monitoring"
+  }
 }

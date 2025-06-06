@@ -3,3 +3,8 @@ variable "db_connectionstring" {
   type        = string
   sensitive   = true
 }
+
+variable "location"{
+  type = string
+  default = "westus2"
+}
