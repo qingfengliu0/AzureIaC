@@ -167,19 +167,19 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert-recordvisit-ddos_d
   resource_group_name = azurerm_resource_group.rg-qliuapi-test.name
 
   data_source_id = azurerm_application_insights.appi-recordvisit-test.id
-  description    = "Alert when a single IP sends 20+ requests in 5 seconds"
+  description    = "Alert when a single IP sends 20+ requests in 5 minutes"
   enabled        = true
 
   query = <<-KQL
     requests
-    | where timestamp > ago(1m)
+    | where timestamp > ago(5m)
     | summarize requestCount = count() by client_IP
     | where requestCount >= 20
   KQL
 
   severity    = 1
-  frequency   = 5     # Evaluate every 5 minute
-  time_window = 5     # Look at the last 5 minute of data (comment fixed)
+  frequency   = 5     # Evaluate every 5 minutes
+  time_window = 5     # Look at the last 5 minutes of data
 
   trigger {
     operator  = "GreaterThan"
@@ -191,7 +191,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert-recordvisit-ddos_d
     email_subject          = "DDoS Detection Alert"
     custom_webhook_payload = jsonencode({
       alertType = "BurstTraffic"
-      message   = "20+ requests in 5s from one IP"
+      message   = "20+ requests in 5 minutes from one IP"
     })
   }
 
