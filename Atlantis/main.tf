@@ -46,57 +46,57 @@ resource "azurerm_storage_container" "qliutfstatecontainer" {
 }
 
 
-resource "azurerm_virtual_network" "atlantis_vnet" {
-  name                = "atlantis-vnet"
-  address_space       = ["10.0.0.0/16"]
-  location            = azurerm_resource_group.atlantis_rg.location
-  resource_group_name = azurerm_resource_group.atlantis_rg.name
+# resource "azurerm_virtual_network" "atlantis_vnet" {
+#   name                = "atlantis-vnet"
+#   address_space       = ["10.0.0.0/16"]
+#   location            = azurerm_resource_group.atlantis_rg.location
+#   resource_group_name = azurerm_resource_group.atlantis_rg.name
   
-}
+# }
 
-resource "azurerm_subnet" "atlantis_subnet" {
-  name                 = "atlantis-subnet"
-  resource_group_name  = azurerm_resource_group.atlantis_rg.name
-  virtual_network_name = azurerm_virtual_network.atlantis_vnet.name
-  address_prefixes     = ["10.0.1.0/24"]
-}
-resource "azurerm_network_security_group" "atlantis_nsg" {
-  name                = "atlantis-nsg"
-  location            = azurerm_resource_group.atlantis_rg.location
-  resource_group_name = azurerm_resource_group.atlantis_rg.name
+# resource "azurerm_subnet" "atlantis_subnet" {
+#   name                 = "atlantis-subnet"
+#   resource_group_name  = azurerm_resource_group.atlantis_rg.name
+#   virtual_network_name = azurerm_virtual_network.atlantis_vnet.name
+#   address_prefixes     = ["10.0.1.0/24"]
+# }
+# resource "azurerm_network_security_group" "atlantis_nsg" {
+#   name                = "atlantis-nsg"
+#   location            = azurerm_resource_group.atlantis_rg.location
+#   resource_group_name = azurerm_resource_group.atlantis_rg.name
 
-  security_rule {
-    name                       = "allow_http"
-    priority                   = 1001
-    direction                  = "Inbound"
-    access                     = "Allow"
-    protocol                   = "Tcp"
-    source_port_range          = "*"
-    destination_port_range     = "4141"
-    source_address_prefix      = "*"
-    destination_address_prefix = "*"
-  }
-}
-resource "azurerm_public_ip" "atlantis_ip" {
-  name                = "atlantis_ip"
-  location            = azurerm_resource_group.atlantis_rg.location
-  resource_group_name = azurerm_resource_group.atlantis_rg.name
-  allocation_method   = "Static"
-}
+#   security_rule {
+#     name                       = "allow_http"
+#     priority                   = 1001
+#     direction                  = "Inbound"
+#     access                     = "Allow"
+#     protocol                   = "Tcp"
+#     source_port_range          = "*"
+#     destination_port_range     = "4141"
+#     source_address_prefix      = "*"
+#     destination_address_prefix = "*"
+#   }
+# }
+# resource "azurerm_public_ip" "atlantis_ip" {
+#   name                = "atlantis_ip"
+#   location            = azurerm_resource_group.atlantis_rg.location
+#   resource_group_name = azurerm_resource_group.atlantis_rg.name
+#   allocation_method   = "Static"
+# }
 
-resource "azurerm_network_interface" "atlantis_nic" {
-  name                = "atlantis-nic"
-  location            = azurerm_resource_group.atlantis_rg.location
-  resource_group_name = azurerm_resource_group.atlantis_rg.name
+# resource "azurerm_network_interface" "atlantis_nic" {
+#   name                = "atlantis-nic"
+#   location            = azurerm_resource_group.atlantis_rg.location
+#   resource_group_name = azurerm_resource_group.atlantis_rg.name
 
-  ip_configuration {
-    name                          = "internal"
-    subnet_id                     = azurerm_subnet.atlantis_subnet.id
-    private_ip_address_allocation = "Dynamic"
-    public_ip_address_id          = azurerm_public_ip.atlantis_ip.id
-  }
+#   ip_configuration {
+#     name                          = "internal"
+#     subnet_id                     = azurerm_subnet.atlantis_subnet.id
+#     private_ip_address_allocation = "Dynamic"
+#     public_ip_address_id          = azurerm_public_ip.atlantis_ip.id
+#   }
 
-}
+# }
 # resource "azurerm_linux_virtual_machine" "atlantis_vm" {
 #   name                = "atlantis-vm"
 #   resource_group_name = azurerm_resource_group.atlantis_rg.name
