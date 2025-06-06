@@ -178,8 +178,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert-recordvisit-ddos_d
   KQL
 
   severity    = 1
-  frequency   = 1     # Evaluate every 1 minute
-  time_window = 1     # Look at the last 1 minute of data (comment fixed)
+  frequency   = 5     # Evaluate every 5 minute
+  time_window = 5     # Look at the last 5 minute of data (comment fixed)
 
   trigger {
     operator  = "GreaterThan"
