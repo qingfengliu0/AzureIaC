@@ -77,8 +77,7 @@ resource "azurerm_linux_function_app" "func-recordvisit-test" {
   service_plan_id        = azurerm_service_plan.asp-qliuapi-test.id
   storage_account_name = azurerm_storage_account.stqliuapi.name
   storage_account_access_key = azurerm_storage_account.stqliuapi.primary_access_key
-  application_insights_connection_string = azurerm_application_insights.appi-recordvisit-test.connection_string
-  application_insights_key               = azurerm_application_insights.appi-recordvisit-test.instrumentation_key
+ 
 
   site_config {
     cors {
@@ -90,9 +89,10 @@ resource "azurerm_linux_function_app" "func-recordvisit-test" {
   }
 
   app_settings = {
-    "FUNCTIONS_WORKER_RUNTIME" = "python"
-    #"WEBSITE_RUN_FROM_PACKAGE" = "1"       # it will break the function app if set to 1
-    "comsmos_container_connection" = var.db_connectionstring
+    "FUNCTIONS_WORKER_RUNTIME"          = "python"
+    "comsmos_container_connection"     = var.db_connectionstring
+    "application_insights_connection_string" = azurerm_application_insights.appi-recordvisit-test.connection_string
+    "application_insights_key"               = azurerm_application_insights.appi-recordvisit-test.instrumentation_key
   }
 
 
