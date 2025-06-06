@@ -72,7 +72,7 @@ resource "azurerm_linux_function_app" "func-recordvisit-test" {
   
   app_settings = {
     "FUNCTIONS_WORKER_RUNTIME" = "python"
-    "WEBSITE_RUN_FROM_PACKAGE" = "1"       # Use package deployment method
+    #"WEBSITE_RUN_FROM_PACKAGE" = "1"       # it will break the function app if set to 1
     "comsmos_container_connection" = var.db_connectionstring
   }
 
