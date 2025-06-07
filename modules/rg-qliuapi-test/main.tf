@@ -50,6 +50,25 @@ resource "azurerm_storage_account" "stqliuapi" {
     environment = "Development"
   }
 }
+#Azure log analytics workspace for monitoring the function app
+resource "azurerm_log_analytics_workspace" "log-recordvisit-test" {
+  name                = "log-recordvisit-test"
+  location            = azurerm_resource_group.rg-qliuapi-test.location
+  resource_group_name = azurerm_resource_group.rg-qliuapi-test.name
+  retention_in_days   = 30
+}
+
+
+#Application Insights for monitoring the function app
+resource "azurerm_application_insights" "appi-recordvisit-test" {
+  name                = "appi-recordvisit-test"
+  location            = azurerm_resource_group.rg-qliuapi-test.location
+  resource_group_name = azurerm_resource_group.rg-qliuapi-test.name
+  workspace_id = azurerm_log_analytics_workspace.log-recordvisit-test.id
+
+  application_type = "web"
+}
+
 
 resource "azurerm_linux_function_app" "func-recordvisit-test" {
   name                       = "func-recordvisit-test"
@@ -58,22 +77,22 @@ resource "azurerm_linux_function_app" "func-recordvisit-test" {
   service_plan_id        = azurerm_service_plan.asp-qliuapi-test.id
   storage_account_name = azurerm_storage_account.stqliuapi.name
   storage_account_access_key = azurerm_storage_account.stqliuapi.primary_access_key
-  
+ 
+
   site_config {
-    cors{
-    allowed_origins = ["https://portal.azure.com", "https://resume.qliu.ca"]
+    cors {
+      allowed_origins = ["https://portal.azure.com", "https://resume.qliu.ca"]
     }
-   application_stack {
-    python_version = "3.11"
-  }
+    application_stack {
+      python_version = "3.11"
+    }
   }
 
- 
-  
   app_settings = {
-    "FUNCTIONS_WORKER_RUNTIME" = "python"
-    #"WEBSITE_RUN_FROM_PACKAGE" = "1"       # it will break the function app if set to 1
-    "comsmos_container_connection" = var.db_connectionstring
+    "FUNCTIONS_WORKER_RUNTIME"          = "python"
+    "comsmos_container_connection"     = var.db_connectionstring
+    "APPLICATIONINSIGHTS_CONNECTION_STRING" = azurerm_application_insights.appi-recordvisit-test.connection_string
+    "APPINSIGHTS_INSTRUMENTATIONKEY"        = azurerm_application_insights.appi-recordvisit-test.instrumentation_key
   }
 
 
@@ -94,14 +113,6 @@ resource "azurerm_linux_function_app" "func-recordvisit-test" {
   }
 }
 
-resource "azurerm_log_analytics_workspace" "log-recordvisit-test" {
-  name                = "log-recordvisit-test"
-  location            = azurerm_resource_group.rg-qliuapi-test.location
-  resource_group_name = azurerm_resource_group.rg-qliuapi-test.name
-  retention_in_days   = 30
-}
-
-
 
 resource "azurerm_monitor_action_group" "ag-qliuapi-test" {
   name                = "ag-qliuapi-test"
@@ -113,14 +124,6 @@ resource "azurerm_monitor_action_group" "ag-qliuapi-test" {
   }
 }
 
-resource "azurerm_application_insights" "appi-recordvisit-test" {
-  name                = "appi-recordvisit-test"
-  location            = azurerm_resource_group.rg-qliuapi-test.location
-  resource_group_name = azurerm_resource_group.rg-qliuapi-test.name
-  workspace_id = azurerm_log_analytics_workspace.log-recordvisit-test.id
-
-  application_type = "web"
-}
 
 resource "azurerm_application_insights_smart_detection_rule" "alert-recordvisit-failedtorespond-test" {
   name                    = "Slow page load time"
