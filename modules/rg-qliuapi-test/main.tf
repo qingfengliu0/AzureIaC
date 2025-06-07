@@ -118,9 +118,20 @@ resource "azurerm_monitor_action_group" "ag-qliuapi-test" {
   name                = "ag-qliuapi-test"
   resource_group_name = azurerm_resource_group.rg-qliuapi-test.name
   short_name          = "API Alert"
+  
+  azure_app_push_receiver {
+    name          = "pushtoadmin"
+    email_address = "admin@qliu.com"
+  }
+
   email_receiver{
     name = "admin"
     email_address = "steven@qliu.ca"
+  }
+  webhook_receiver {
+    name                    = "pagerduty"
+    service_uri             = "https://events.pagerduty.com/integration/332a617800354b01d0a7da632968bcc8/enqueue"
+    use_common_alert_schema = true
   }
 }
 
