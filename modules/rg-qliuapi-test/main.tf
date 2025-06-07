@@ -95,7 +95,17 @@ resource "azurerm_linux_function_app" "func-recordvisit-test" {
     "APPINSIGHTS_INSTRUMENTATIONKEY"        = azurerm_application_insights.appi-recordvisit-test.instrumentation_key
   }
 
-
+    lifecycle {
+    ignore_changes = [
+      app_settings["WEBSITE_RUN_FROM_PACKAGE"],
+      app_settings["WEBSITE_CONTENTAZUREFILECONNECTIONSTRING"],
+      app_settings["WEBSITE_CONTENTSHARE"],
+      app_settings["AzureWebJobsStorage"],
+      app_settings["AzureWebJobsDashboard"],
+      app_settings["WEBSITE_ENABLE_SYNC_UPDATE_SITE"],
+      app_settings["FUNCTIONS_EXTENSION_VERSION"]
+    ]
+  }
 
   connection_string {
     name = "comsmos-container-connection"
