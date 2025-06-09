@@ -226,7 +226,6 @@ resource "azurerm_monitor_action_group" "slack_logicapp_ag" {
   name                = "ag-forward-to-logicapp"
   resource_group_name = azurerm_resource_group.rg-qliuapi-test.name
   short_name          = "SlackAG"
-  location            = azurerm_resource_group.rg-qliuapi-test.location
 
   logic_app_receiver {
     name                    = "logicapp-slack"
@@ -235,6 +234,7 @@ resource "azurerm_monitor_action_group" "slack_logicapp_ag" {
     use_common_alert_schema = true
   }
 }
+
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "ddos_detection" {
   name                = "ddos-detection-alert"
