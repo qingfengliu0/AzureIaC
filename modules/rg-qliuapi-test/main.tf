@@ -217,7 +217,7 @@ resource "azurerm_logic_app_action_http" "send_slack" {
 
   body = <<JSON
 {
-  "text": "@{triggerBody().message}"
+  "text": "@{triggerBody().data.message}"
 }
 JSON
 }
