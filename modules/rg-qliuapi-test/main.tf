@@ -185,37 +185,88 @@ resource "azurerm_monitor_diagnostic_setting" "diagsetting-recordvisit-test" {
   }
 }
 
-resource "azurerm_monitor_scheduled_query_rules_alert" "alert-recordvisit-ddos_detection-test" {
+resource "azurerm_logic_app_workflow" "logic-workflow-qliu-test" {
+  name                = "send-slack-notification"
+  location            = azurerm_resource_group.rg-qliuapi-test.location
+  resource_group_name = azurerm_resource_group.rg-qliuapi-test.name
+}
+
+resource "azurerm_logic_app_trigger_http_request" "trigger" {
+  name         = "incoming_alert"
+  logic_app_id = azurerm_logic_app_workflow.logic-workflow-qliu-test.id
+
+  schema = <<JSON
+{
+  "properties": {
+    "message": { "type": "string" }
+  },
+  "type": "object"
+}
+JSON
+}
+
+resource "azurerm_logic_app_action_http" "send_slack" {
+  name         = "send_to_slack"
+  logic_app_id = azurerm_logic_app_workflow.logic-workflow-qliu-test.id
+
+  method  = "POST"
+  uri     = "https://hooks.slack.com/services/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"
+  headers = {
+    "Content-Type" = "application/json"
+  }
+
+  body = <<JSON
+{
+  "text": "@{triggerBody().message}"
+}
+JSON
+}
+
+resource "azurerm_monitor_action_group" "slack_logicapp_ag" {
+  name                = "ag-forward-to-logicapp"
+  resource_group_name = azurerm_resource_group.rg-qliuapi-test.name
+  short_name          = "SlackAG"
+  location            = azurerm_resource_group.rg-qliuapi-test.location
+
+  logic_app_receiver {
+    name                    = "logicapp-slack"
+    resource_id             = azurerm_logic_app_workflow.logic-workflow-qliu-test.id
+    callback_url            = azurerm_logic_app_trigger_http_request.trigger.callback_url
+    use_common_alert_schema = true
+  }
+}
+
+resource "azurerm_monitor_scheduled_query_rules_alert" "ddos_detection" {
   name                = "ddos-detection-alert"
   location            = azurerm_resource_group.rg-qliuapi-test.location
   resource_group_name = azurerm_resource_group.rg-qliuapi-test.name
 
   data_source_id = azurerm_application_insights.appi-recordvisit-test.id
-  description    = "Alert when a single IP sends 20+ requests in 5 minutes"
+  description    = "Alert when a single IP sends 20+ requests in 5 seconds"
   enabled        = true
 
   query = <<-KQL
     requests
-    | where timestamp > ago(5m)
+    | where timestamp > ago(1m)
     | summarize requestCount = count() by client_IP
     | where requestCount >= 20
   KQL
 
   severity    = 1
-  frequency   = 5     # Evaluate every 5 minutes
-  time_window = 5     # Look at the last 5 minutes of data
+  frequency   = 5
+  time_window = 5
 
   trigger {
     operator  = "GreaterThan"
-    threshold = 0      # Alert if any IP exceeds the threshold
+    threshold = 0
   }
 
   action {
-    action_group           = [azurerm_monitor_action_group.ag-qliuapi-test.id]
+    action_group           = [azurerm_monitor_action_group.slack_logicapp_ag.id, azurerm_monitor_action_group.ag-qliuapi-test.id]
     email_subject          = "DDoS Detection Alert"
     custom_webhook_payload = jsonencode({
       alertType = "BurstTraffic"
-      message   = "20+ requests in 5 minutes from one IP"
+      message   = "20+ requests in 5s from one IP"
     })
   }
 
