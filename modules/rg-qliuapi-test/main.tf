@@ -210,7 +210,7 @@ resource "azurerm_logic_app_action_http" "send_slack" {
   logic_app_id = azurerm_logic_app_workflow.logic-workflow-qliu-test.id
 
   method  = "POST"
-  uri     = "https://hooks.slack.com/services/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"
+  uri     = var.slack_webhook
   headers = {
     "Content-Type" = "application/json"
   }

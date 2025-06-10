@@ -8,3 +8,9 @@ variable "location"{
   type = string
   default = "westus2"
 }
+
+variable "slack_webhook"{
+  description = "slack webhook url for alert notification"
+  type        = string
+  sensitive   = true
+}
