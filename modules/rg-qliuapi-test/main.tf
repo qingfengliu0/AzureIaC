@@ -196,14 +196,57 @@ resource "azurerm_logic_app_trigger_http_request" "trigger" {
   logic_app_id = azurerm_logic_app_workflow.logic-workflow-qliu-test.id
 
   schema = <<JSON
-{
-  "properties": {
-    "message": { "type": "string" }
-  },
-  "type": "object"
+  {
+    "type": "object",
+    "properties": {
+      "schemaId": { "type": "string" },
+      "data": {
+        "type": "object",
+        "properties": {
+          "essentials": {
+            "type": "object",
+            "properties": {
+              "alertRule": { "type": "string" },
+              "severity": { "type": "string" },
+              "monitorCondition": { "type": "string" },
+              "alertTargetIDs": {
+                "type": "array",
+                "items": { "type": "string" }
+              },
+              "firedDateTime": { "type": "string" },
+              "resolvedDateTime": { "type": "string" },
+              "description": { "type": "string" }
+            }
+          },
+          "alertContext": {
+            "type": "object",
+            "properties": {
+              "condition": {
+                "type": "object",
+                "properties": {
+                  "allOf": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "metricName": { "type": "string" },
+                        "threshold": { "type": "string" },
+                        "metricValue": { "type": "number" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "required": ["schemaId", "data"]
+  }
+  JSON
 }
-JSON
-}
+
 
 resource "azurerm_logic_app_action_http" "send_slack" {
   name         = "send_to_slack"
@@ -215,9 +258,16 @@ resource "azurerm_logic_app_action_http" "send_slack" {
     "Content-Type" = "application/json"
   }
 
-  body = <<JSON
+   body = <<JSON
 {
-  "text": "@{string(triggerBody())}"
+  "text": "@{concat(
+    '*Alert Rule:* ', triggerBody()?['data']?['essentials']?['alertRule'], '\n',
+    '*Severity:* ', triggerBody()?['data']?['essentials']?['severity'], '\n',
+    '*Condition:* ', triggerBody()?['data']?['essentials']?['monitorCondition'], '\n',
+    '*Metric:* ', triggerBody()?['data']?['alertContext']?['condition']?['allOf'][0]?['metricName'], '\n',
+    '*Metric Value:* ', string(triggerBody()?['data']?['alertContext']?['condition']?['allOf'][0]?['metricValue']), '\n',
+    '*Resource:* ', triggerBody()?['data']?['essentials']?['alertTargetIDs'][0]
+  )}"
 }
 JSON
 }
