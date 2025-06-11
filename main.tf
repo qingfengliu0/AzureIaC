@@ -46,4 +46,5 @@ module "rg-qliubackend-test" {
 module "rg-qliuapi-test" {
   source = "./modules/rg-qliuapi-test"
   db_connectionstring = module.rg-qliubackend-test.db_connectionstring
+  slack_webhook = var.slack_webhook
 }
