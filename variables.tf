@@ -49,3 +49,9 @@ variable "dns_value" {
   type        = string
   default = "52.149.3.82"
 }
+
+variable "slack_webhook"{
+  description = "slack webhook url for alert notification"
+  type        = string
+  sensitive   = true
+}
