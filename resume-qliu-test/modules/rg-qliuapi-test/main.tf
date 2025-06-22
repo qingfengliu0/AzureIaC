@@ -157,13 +157,13 @@ resource "azurerm_application_insights_smart_detection_rule" "alert-recordvisit-
 
 resource "azurerm_application_insights_smart_detection_rule" "alert-recordvisit-highdelayresponse-test" {
   name                    = "Slow server response time"
-  application_insights_id = azurerm_application_insights.appi_recordvisit_test.id
+  application_insights_id = azurerm_application_insights.appi-recordvisit-test.id
   enabled                 = true
 }
 
 resource "azurerm_application_insights_smart_detection_rule" "alert-recordvisit-dosattack-test" {
   name                    = "Potential security issue detected"
-  application_insights_id = azurerm_application_insights.appi_recordvisit_test.id
+  application_insights_id = azurerm_application_insights.appi-recordvisit-test.id
   enabled                 = true
 }
 
