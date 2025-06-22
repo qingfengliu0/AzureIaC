@@ -14,3 +14,9 @@ variable "slack_webhook"{
   type        = string
   sensitive   = true
 }
+
+variable "pagerduty_webhook"{
+  description = "slack webhook url for alert notification"
+  type        = string
+  sensitive   = true
+}

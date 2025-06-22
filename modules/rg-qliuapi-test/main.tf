@@ -140,7 +140,7 @@ resource "azurerm_monitor_action_group" "ag-qliuapi-test" {
   }
   webhook_receiver {
     name                    = "pagerduty"
-    service_uri             = "https://events.pagerduty.com/integration/332a617800354b01d0a7da632968bcc8/enqueue"
+    service_uri             = var.pagerduty_webhook
     use_common_alert_schema = true
   }
 }
