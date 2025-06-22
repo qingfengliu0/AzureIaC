@@ -1,0 +1,10 @@
+version: 3
+projects:
+- name: test-environment
+  dir: resume-qliu-test   # Path to your Terraform code folder
+  workflow: default
+  autoplan:
+    when_modified:
+    - '**/*.tf'                     # Run plan if any Terraform files change here
+    enabled: true
+  apply_requirements: []
