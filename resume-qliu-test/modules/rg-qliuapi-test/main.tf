@@ -78,6 +78,9 @@ resource "azurerm_linux_function_app" "func-recordvisit-test" {
   storage_account_name = azurerm_storage_account.stqliuapi.name
   storage_account_access_key = azurerm_storage_account.stqliuapi.primary_access_key
  
+  depends_on = [
+    azurerm_application_insights.appi-recordvisit-test
+  ]
 
   site_config {
     cors {
@@ -110,7 +113,7 @@ resource "azurerm_linux_function_app" "func-recordvisit-test" {
   connection_string {
     name = "comsmos-container-connection"
     value = var.db_connectionstring
-    type= "Custom"
+    type = "Custom"
   }
   
   identity {
@@ -154,13 +157,13 @@ resource "azurerm_application_insights_smart_detection_rule" "alert-recordvisit-
 
 resource "azurerm_application_insights_smart_detection_rule" "alert-recordvisit-highdelayresponse-test" {
   name                    = "Slow server response time"
-  application_insights_id = azurerm_application_insights.appi-recordvisit-test.id
+  application_insights_id = azurerm_application_insights.appi_recordvisit_test.id
   enabled                 = true
 }
 
 resource "azurerm_application_insights_smart_detection_rule" "alert-recordvisit-dosattack-test" {
   name                    = "Potential security issue detected"
-  application_insights_id = azurerm_application_insights.appi-recordvisit-test.id
+  application_insights_id = azurerm_application_insights.appi_recordvisit_test.id
   enabled                 = true
 }
 
