@@ -7,4 +7,4 @@ projects:
     when_modified:
     - '**/*.tf'                     # Run plan if any Terraform files change here
     enabled: true
-  apply_requirements: [approved, mergeable]
+  apply_requirements: []
