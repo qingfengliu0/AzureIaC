@@ -62,8 +62,9 @@ variable "pagerduty_webhook"{
   sensitive   = true
 }
 
-variable "subscription_id" {
-  description = "Azure subscription ID for the production environment"
+variable "azure_subscription_id_prod" {
+  description = "Azure subscription ID for production environment"
   type        = string
-  default = "3c4400b5-5046-4702-992d-360891bd47d3"
+  default     = "b8a4d2eb-79b6-4128-89b7-924413033e68" # Replace with your actual subscription ID
+  
 }

@@ -49,21 +49,7 @@ variable "dns_value" {
   type        = string
   default = "52.149.3.82"
 }
-
-variable "slack_webhook"{
-  description = "slack webhook url for alert notification"
-  type        = string
-  sensitive   = true
-}
-
-variable "pagerduty_webhook"{
-  description = "pagerduty webhook url for alert notification"
-  type        = string
-  sensitive   = true
-}
-
 variable "subscription_id" {
   description = "Azure subscription ID for the production environment"
   type        = string
-  default = "3c4400b5-5046-4702-992d-360891bd47d3"
 }
