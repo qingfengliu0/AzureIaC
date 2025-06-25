@@ -8,13 +8,3 @@ projects:
     - '**/*.tf'                     # Run plan if any Terraform files change here
     enabled: true
   apply_requirements: []
-  branch: test                      # Apply changes only for the test branch
-- name: production-environment
-  dir: resume-qliu-prod   # Path to your Terraform code folder for production
-  workflow: default
-  autoplan:
-    when_modified:
-    - '**/*.tf'                     # Run plan if any Terraform files change here
-    enabled: true
-  apply_requirements: []
-  branch: main                      # Apply changes only for the production branch
