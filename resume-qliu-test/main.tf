@@ -25,7 +25,6 @@ backend "azurerm" {
 
 provider "azurerm" {
   features {}
-  subscription_id = var.subscription_id # Use environment-specific subscription ID
 }
 # Configure the Cloudflare provider
 provider "cloudflare" {
