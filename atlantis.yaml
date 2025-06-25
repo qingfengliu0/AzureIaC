@@ -17,4 +17,4 @@ projects:
     - 'main.tf'                     # Run plan if any Terraform files change here
     enabled: true
   apply_requirements: []
-  branch: /main/                    # Apply changes only for the production branch
+  branch: /main/                    # Apply changes only for the production branch                  # Run plan if any Terraform files change here
