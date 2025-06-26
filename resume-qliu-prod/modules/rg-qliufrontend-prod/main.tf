@@ -22,7 +22,7 @@ provider "cloudflare" {
 
 provider "azurerm" {
   features {}
-  #subscription_id = var.azure_subscription_id_prod
+  subscription_id = var.azure_subscription_id_prod
 }
 
 # resource "azurerm_resource_group" "rg-qliufrontend-prod" {
