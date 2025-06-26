@@ -23,6 +23,8 @@ provider "cloudflare" {
 provider "azurerm" {
   features {}
   subscription_id = var.azure_subscription_id_prod
+  resource_provider_registrations = "none"  # Disable auto-registration
+
 }
 
 resource "azurerm_resource_group" "rg-qliufrontend-prod" {
