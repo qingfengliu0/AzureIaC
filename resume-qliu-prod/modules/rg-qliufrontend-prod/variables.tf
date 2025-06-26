@@ -49,3 +49,10 @@ variable "dns_value" {
   type        = string
   default = "52.149.3.82"
 }
+
+variable "azure_subscription_id_prod" {
+  description = "Azure subscription ID for production"
+  type        = string
+  default = "b8a4d2eb-79b6-4128-89b7-924413033e68"
+  
+}
