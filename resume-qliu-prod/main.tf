@@ -33,8 +33,8 @@ provider "cloudflare" {
   api_key = var.cloudflare_api_key
 }
 
-module "rg-qliufrontend-prod" {
-  source = "./modules/rg-qliufrontend-prod"
-  admin_password = var.admin_password
-  cloudflare_api_key = var.cloudflare_api_key
-}
+# module "rg-qliufrontend-prod" {
+#   source = "./modules/rg-qliufrontend-prod"
+#   admin_password = var.admin_password
+#   cloudflare_api_key = var.cloudflare_api_key
+# }
