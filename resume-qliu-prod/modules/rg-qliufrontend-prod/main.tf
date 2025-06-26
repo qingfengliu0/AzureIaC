@@ -25,14 +25,14 @@ provider "azurerm" {
   subscription_id = var.azure_subscription_id_prod
 }
 
-# resource "azurerm_resource_group" "rg-qliufrontend-prod" {
-#   name     = "rg-qliufrontend-prod"
-#   location = var.location
-#   tags = {
-#     Environment = "production"
-#     Team        = "Steven"
-#   }
-# }
+resource "azurerm_resource_group" "rg-qliufrontend-prod" {
+  name     = "rg-qliufrontend-prod"
+  location = var.location
+  tags = {
+    Environment = "production"
+    Team        = "Steven"
+  }
+}
 
 # # Create a Blob Storage for holding the static code
 # resource "azurerm_storage_account" "st-qliufrontend-prod" {
