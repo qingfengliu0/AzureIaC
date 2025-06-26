@@ -25,7 +25,7 @@ terraform {
 
 provider "azurerm" {
   features {}
-  subscription_id = var.azure_subscription_id_prod  # Separate subscription for prod
+  #subscription_id = var.azure_subscription_id_prod  # Separate subscription for prod
 }
 # Configure the Cloudflare provider
 provider "cloudflare" {
