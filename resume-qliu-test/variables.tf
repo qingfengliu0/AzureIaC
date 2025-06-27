@@ -39,9 +39,9 @@ variable "cloudflare_zone_id" {
 }
 
 variable "dns_name" {
-  description = "resume.qliu.ca"
+  description = "resumetest.qliu.ca"
   type        = string
-  default = "resume.qliu.ca"
+  default = "resumetest.qliu.ca"
 }
 
 variable "dns_value" {
