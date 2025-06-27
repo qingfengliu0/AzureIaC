@@ -100,7 +100,7 @@ resource "azurerm_cdn_endpoint" "cdne-qliufrontend-test" {
 # Define the DNS record in Cloudflare
 resource "cloudflare_record" "dns-qliufrontend-test" {
   zone_id = var.cloudflare_zone_id
-  name    = "var.dns_name"
+  name    = var.dns_name
   value   = azurerm_cdn_endpoint.cdne-qliufrontend-test.fqdn 
   type    = "CNAME"
   ttl     = 300
