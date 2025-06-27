@@ -97,28 +97,28 @@ resource "azurerm_cdn_endpoint" "cdne-qliufrontend-test" {
   }
 }
 
-# Define the DNS record in Cloudflare
-resource "cloudflare_record" "dns-qliufrontend-test" {
-  zone_id = var.cloudflare_zone_id
-  name    = var.dns_name
-  value   = azurerm_cdn_endpoint.cdne-qliufrontend-test.fqdn 
-  type    = "CNAME"
-  ttl     = 300
-}
+# # Define the DNS record in Cloudflare
+# resource "cloudflare_record" "dns-qliufrontend-test" {
+#   zone_id = var.cloudflare_zone_id
+#   name    = "var.dns_name"
+#   value   = azurerm_cdn_endpoint.cdne-qliufrontend-test.fqdn 
+#   type    = "CNAME"
+#   ttl     = 300
+# }
 
-resource "time_sleep" "wait_60_seconds" {
-  create_duration = "300s" # Wait for 60 seconds
-}
+# resource "time_sleep" "wait_60_seconds" {
+#   create_duration = "300s" # Wait for 60 seconds
+# }
 
-# Add a Custom Domain to the CDN Endpoint
-resource "azurerm_cdn_endpoint_custom_domain" "domain-qliufrontend-test" {
-  name            = "qliu-cdn-domain"
-  cdn_endpoint_id = azurerm_cdn_endpoint.cdne-qliufrontend-test.id
-  host_name       = var.dns_name # Your custom domain
+# # Add a Custom Domain to the CDN Endpoint
+# resource "azurerm_cdn_endpoint_custom_domain" "domain-qliufrontend-test" {
+#   name            = "qliu-cdn-domain"
+#   cdn_endpoint_id = azurerm_cdn_endpoint.cdne-qliufrontend-test.id
+#   host_name       = var.dns_name # Your custom domain
 
-  cdn_managed_https {
-    certificate_type = "Dedicated"
-    protocol_type    = "ServerNameIndication"
-    tls_version      = "TLS12"
-  }
-}
+#   cdn_managed_https {
+#     certificate_type = "Dedicated"
+#     protocol_type    = "ServerNameIndication"
+#     tls_version      = "TLS12"
+#   }
+# }
