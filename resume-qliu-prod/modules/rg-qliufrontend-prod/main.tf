@@ -12,6 +12,9 @@ terraform {
       source = "hashicorp/time"
       version = "~> 0.7.0"
     }
+      azapi = {
+      source = "Azure/azapi"
+    }
   }
 }
 
@@ -19,16 +22,26 @@ provider "cloudflare" {
   email   = var.cloudflare_email
   api_key = var.cloudflare_api_key
 }
+provider "azapi" {
 
+}
 provider "azurerm" {
   features {}
   subscription_id = var.azure_subscription_id_prod
   resource_provider_registrations = "none"  # Disable auto-registration
 
 }
-provider "azapi" {
-  # Assumes azurerm is also configured
+
+#register the Microsoft.Storage resource provider
+resource "azapi_resource" "register_storage" {
+  type      = "Microsoft.Storage@2021-04-01"
+  name      = "register"
+  parent_id = "/subscriptions/${data.azurerm_client_config.current.subscription_id}/providers/Microsoft.Storage"
+
+  # Registration is done by creating a dummy resource under the provider namespace
+  body = jsonencode({})
 }
+
 
 resource "azurerm_resource_group" "rg-qliufrontend-prod" {
   name     = "rg-qliufrontend-prod"
@@ -40,15 +53,6 @@ resource "azurerm_resource_group" "rg-qliufrontend-prod" {
 }
 
 
-#register the Microsoft.Storage resource provider
-resource "azapi_resource" "register_storage" {
-  type      = "Microsoft.Storage@2021-04-01"
-  name      = "register"
-  parent_id = "/subscriptions/${data.azurerm_client_config.current.subscription_id}/providers/Microsoft.Storage"
-
-  # Registration is done by creating a dummy resource under the provider namespace
-  body = jsonencode({})
-}
 
 # Create a Blob Storage for holding the static code
 # resource "azurerm_storage_account" "st-qliufrontend-prod" {
