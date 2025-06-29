@@ -14,6 +14,7 @@ terraform {
     }
       azapi = {
       source = "Azure/azapi"
+      version = "~> 1.15.0"
     }
   }
 }
@@ -22,24 +23,20 @@ provider "cloudflare" {
   email   = var.cloudflare_email
   api_key = var.cloudflare_api_key
 }
-provider "azapi" {
 
-}
 provider "azurerm" {
   features {}
   subscription_id = var.azure_subscription_id_prod
   resource_provider_registrations = "none"  # Disable auto-registration
-
 }
 
 #register the Microsoft.Storage resource provider
-resource "azapi_resource" "register_storage" {
-  type      = "Microsoft.Storage@2021-04-01"
-  name      = "register"
-  parent_id = "/subscriptions/${var.azure_subscription_id_prod}/providers/Microsoft.Storage"
-
-  # Registration is done by creating a dummy resource under the provider namespace
-  body = jsonencode({})
+resource "azapi_resource_action" "register_storage" {
+  type                   = "Microsoft.Resources/subscriptions@2022-12-01"
+  resource_id            = "/subscriptions/${var.azure_subscription_id_prod}"
+  action                 = "providers/Microsoft.Storage/register"
+  method                 = "POST"
+  response_export_values = ["*"]
 }
 
 
