@@ -116,9 +116,9 @@ resource "azurerm_cdn_endpoint_custom_domain" "domain-qliufrontend-test" {
   cdn_endpoint_id = azurerm_cdn_endpoint.cdne-qliufrontend-test.id
   host_name       = var.dns_name # Your custom domain
 
-  # cdn_managed_https {
-  #   certificate_type = "Dedicated"
-  #   protocol_type    = "ServerNameIndication"
-  #   tls_version      = "TLS12"
-  # }
+  cdn_managed_https {
+    certificate_type = "Dedicated"
+    protocol_type    = "ServerNameIndication"
+    tls_version      = "TLS12"
+  }
 }
