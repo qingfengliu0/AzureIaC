@@ -36,7 +36,7 @@ provider "azurerm" {
 resource "azapi_resource" "register_storage" {
   type      = "Microsoft.Storage@2021-04-01"
   name      = "register"
-  parent_id = "/subscriptions/${data.azurerm_client_config.current.subscription_id}/providers/Microsoft.Storage"
+  parent_id = "/subscriptions/${var.azure_subscription_id_prod}/providers/Microsoft.Storage"
 
   # Registration is done by creating a dummy resource under the provider namespace
   body = jsonencode({})
