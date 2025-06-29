@@ -51,19 +51,19 @@ resource "azurerm_resource_group" "rg-qliufrontend-prod" {
 
 
 
-# Create a Blob Storage for holding the static code
-# resource "azurerm_storage_account" "st-qliufrontend-prod" {
-#   name                     = "stqliufrontendprod" # Ensure this name is globally unique
-#   resource_group_name      = azurerm_resource_group.rg-qliufrontend-prod.name
-#   location                 = azurerm_resource_group.rg-qliufrontend-prod.location
-#   account_tier             = "Standard"
-#   account_replication_type = "LRS"
-#   https_traffic_only_enabled = false 
-#   static_website {
-#     index_document     = "index.html"
-#     error_404_document = "404.html"
-#   }
-# }
+#Create a Blob Storage for holding the static code
+resource "azurerm_storage_account" "st-qliufrontend-prod" {
+  name                     = "stqliufrontendprod" # Ensure this name is globally unique
+  resource_group_name      = azurerm_resource_group.rg-qliufrontend-prod.name
+  location                 = azurerm_resource_group.rg-qliufrontend-prod.location
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
+  https_traffic_only_enabled = false 
+  static_website {
+    index_document     = "index.html"
+    error_404_document = "404.html"
+  }
+}
 
 # # Create a CDN Profile
 # resource "azurerm_cdn_profile" "cdnp-qliufrontend-prod" {
