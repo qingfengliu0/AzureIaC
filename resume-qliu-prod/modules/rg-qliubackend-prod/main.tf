@@ -10,9 +10,6 @@ terraform {
   required_version = ">= 1.1.0"
 }
 
-provider "azurerm" {
-  features {}
-}
 
 # resource "azurerm_resource_group" "rg-qliubackend-prod" {
 #   name     = "rg-qliubackend-prod"
