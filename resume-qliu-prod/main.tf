@@ -39,6 +39,6 @@ module "rg-qliufrontend-prod" {
   cloudflare_api_key = var.cloudflare_api_key
 }
 
-module "rg-qliubackend-test" {
-  source = "./modules/rg-qliubackend-test"
+module "rg-qliubackend-prod" {
+  source = "./modules/rg-qliubackend-prod"
 }
