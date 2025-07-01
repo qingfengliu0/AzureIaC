@@ -42,3 +42,10 @@ module "rg-qliufrontend-prod" {
 module "rg-qliubackend-prod" {
   source = "./modules/rg-qliubackend-prod"
 }
+
+module "rg-qliuapi-prod" {
+  source = "./modules/rg-qliuapi-prod"
+  db_connectionstring = module.rg-qliubackend-prod.db_connectionstring
+  slack_webhook = var.slack_webhook
+  pagerduty_webhook = var.pagerduty_webhook
+}
