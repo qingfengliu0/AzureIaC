@@ -17,6 +17,7 @@ resource "azurerm_cosmosdb_account" "cosmos-qliubackend-prod" {
   resource_group_name = azurerm_resource_group.rg-qliubackend-prod.name
   offer_type          = "Standard"
   kind                = "GlobalDocumentDB"
+  free_tier_enabled   = "true"
   geo_location {
     location          = "westus2"
     failover_priority = 0
