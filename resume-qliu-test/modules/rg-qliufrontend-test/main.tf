@@ -55,70 +55,70 @@ resource "azurerm_cdn_profile" "cdnp-qliufrontend-test" {
   sku                 = "Standard_Microsoft"
 }
 
-# # Create a CDN Endpoint, origin is the web storage endpoint
-# resource "azurerm_cdn_endpoint" "cdne-qliufrontend-test" {
-#   name                = "cdne-qliufrontend-test"
-#   resource_group_name = azurerm_resource_group.rg-qliufrontend-test.name
-#   profile_name        = azurerm_cdn_profile.cdnp-qliufrontend-test.name # Fixed reference to CDN profile
-#   location            = "eastus"
-#   origin_path         = "/public" # Ensure this is correct for your static website
+# Create a CDN Endpoint, origin is the web storage endpoint
+resource "azurerm_cdn_endpoint" "cdne-qliufrontend-test" {
+  name                = "cdne-qliufrontend-test"
+  resource_group_name = azurerm_resource_group.rg-qliufrontend-test.name
+  profile_name        = azurerm_cdn_profile.cdnp-qliufrontend-test.name # Fixed reference to CDN profile
+  location            = "eastus"
+  origin_path         = "/public" # Ensure this is correct for your static website
 
-#   origin {
-#     name      = "storage-origin"
-#     host_name = azurerm_storage_account.st-qliufrontend-test.primary_web_host
-#     http_port = 80
-#     https_port = 443
-#   }
+  origin {
+    name      = "storage-origin"
+    host_name = azurerm_storage_account.st-qliufrontend-test.primary_web_host
+    http_port = 80
+    https_port = 443
+  }
   
-#   origin_host_header = azurerm_storage_account.st-qliufrontend-test.primary_web_host
+  origin_host_header = azurerm_storage_account.st-qliufrontend-test.primary_web_host
 
-#   is_http_allowed  = true
-#   is_https_allowed = true
+  is_http_allowed  = true
+  is_https_allowed = true
 
-#   delivery_rule {
-#     name  = "redirect2https"
-#     order = 1
+  delivery_rule {
+    name  = "redirect2https"
+    order = 1
 
-#     request_uri_condition {
-#       operator    = "Equal"
-#       match_values = ["/"]
-#     }
+    request_uri_condition {
+      operator    = "Equal"
+      match_values = ["/"]
+    }
 
-#     request_scheme_condition {
-#       operator    = "Equal"
-#       match_values = ["HTTP"]
-#     }
+    request_scheme_condition {
+      operator    = "Equal"
+      match_values = ["HTTP"]
+    }
 
-#     url_redirect_action {
-#       redirect_type = "Found"
-#       protocol      = "Https"
-#       hostname      = azurerm_storage_account.st-qliufrontend-test.primary_web_host
-#     }
-#   }
-# }
+    url_redirect_action {
+      redirect_type = "Found"
+      protocol      = "Https"
+      hostname      = azurerm_storage_account.st-qliufrontend-test.primary_web_host
+    }
+  }
+}
 
-# # Define the DNS record in Cloudflare
-# resource "cloudflare_record" "dns-qliufrontend-test" {
-#   zone_id = var.cloudflare_zone_id
-#   name    = var.dns_name
-#   value   = azurerm_cdn_endpoint.cdne-qliufrontend-test.fqdn 
-#   type    = "CNAME"
-#   ttl     = 300
-# }
+# Define the DNS record in Cloudflare
+resource "cloudflare_record" "dns-qliufrontend-test" {
+  zone_id = var.cloudflare_zone_id
+  name    = var.dns_name
+  value   = azurerm_cdn_endpoint.cdne-qliufrontend-test.fqdn 
+  type    = "CNAME"
+  ttl     = 300
+}
 
-# resource "time_sleep" "wait_60_seconds" {
-#   create_duration = "300s" # Wait for 60 seconds
-# }
+resource "time_sleep" "wait_60_seconds" {
+  create_duration = "300s" # Wait for 60 seconds
+}
 
-# # Add a Custom Domain to the CDN Endpoint
-# resource "azurerm_cdn_endpoint_custom_domain" "domain-qliufrontend-test" {
-#   name            = "qliu-cdn-domain"
-#   cdn_endpoint_id = azurerm_cdn_endpoint.cdne-qliufrontend-test.id
-#   host_name       = var.dns_name # Your custom domain
+# Add a Custom Domain to the CDN Endpoint
+resource "azurerm_cdn_endpoint_custom_domain" "domain-qliufrontend-test" {
+  name            = "qliu-cdn-domain"
+  cdn_endpoint_id = azurerm_cdn_endpoint.cdne-qliufrontend-test.id
+  host_name       = var.dns_name # Your custom domain
 
-#   cdn_managed_https {
-#     certificate_type = "Dedicated"
-#     protocol_type    = "ServerNameIndication"
-#     tls_version      = "TLS12"
-#   }
-# }
+  cdn_managed_https {
+    certificate_type = "Dedicated"
+    protocol_type    = "ServerNameIndication"
+    tls_version      = "TLS12"
+  }
+}
