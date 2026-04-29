@@ -47,13 +47,13 @@ resource "azurerm_storage_account" "st-qliufrontend-test" {
   }
 }
 
-# Create a CDN Profile
-resource "azurerm_cdn_profile" "cdnp-qliufrontend-test" {
-  name                = "cdnp-qliufrontend-test"
-  location            = "eastus"
-  resource_group_name = azurerm_resource_group.rg-qliufrontend-test.name
-  sku                 = "Standard_Microsoft"
-}
+# # Create a CDN Profile
+# resource "azurerm_cdn_profile" "cdnp-qliufrontend-test" {
+#   name                = "cdnp-qliufrontend-test"
+#   location            = "eastus"
+#   resource_group_name = azurerm_resource_group.rg-qliufrontend-test.name
+#   sku                 = "Standard_Microsoft"
+# }
 
 # # Create a CDN Endpoint, origin is the web storage endpoint
 # resource "azurerm_cdn_endpoint" "cdne-qliufrontend-test" {
