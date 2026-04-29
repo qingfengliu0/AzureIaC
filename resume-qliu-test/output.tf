@@ -5,3 +5,15 @@
 # output "cdn_endpoint" {
 #   value = azurerm_cdn_endpoint.resume-cdn-endpoint-qliu.fqdn
 # }
+
+output "frontend_static_website_host" {
+  value = module.rg-qliufrontend-test.static_website_host
+}
+
+output "frontend_cloudflare_record_hostname" {
+  value = module.rg-qliufrontend-test.cloudflare_record_hostname
+}
+
+output "frontend_cloudflare_record_proxied" {
+  value = module.rg-qliufrontend-test.cloudflare_record_proxied
+}

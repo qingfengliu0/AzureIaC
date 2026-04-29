@@ -35,12 +35,12 @@ resource "azurerm_resource_group" "rg-qliufrontend-test" {
 
 # Create a Blob Storage for holding the static code
 resource "azurerm_storage_account" "st-qliufrontend-test" {
-  name                     = "stqliufrontendtest" # Ensure this name is globally unique
-  resource_group_name      = azurerm_resource_group.rg-qliufrontend-test.name
-  location                 = azurerm_resource_group.rg-qliufrontend-test.location
-  account_tier             = "Standard"
-  account_replication_type = "LRS"
-  https_traffic_only_enabled = false 
+  name                       = "stqliufrontendtest" # Ensure this name is globally unique
+  resource_group_name        = azurerm_resource_group.rg-qliufrontend-test.name
+  location                   = azurerm_resource_group.rg-qliufrontend-test.location
+  account_tier               = "Standard"
+  account_replication_type   = "LRS"
+  https_traffic_only_enabled = false
   static_website {
     index_document     = "index.html"
     error_404_document = "404.html"
@@ -97,14 +97,14 @@ resource "azurerm_storage_account" "st-qliufrontend-test" {
 #   }
 # }
 
-# # Define the DNS record in Cloudflare
-# resource "cloudflare_record" "dns-qliufrontend-test" {
-#   zone_id = var.cloudflare_zone_id
-#   name    = var.dns_name
-#   value   = azurerm_cdn_endpoint.cdne-qliufrontend-test.fqdn 
-#   type    = "CNAME"
-#   ttl     = 300
-# }
+resource "cloudflare_record" "dns-qliufrontend-test" {
+  zone_id = var.cloudflare_zone_id
+  name    = var.dns_name
+  value   = azurerm_storage_account.st-qliufrontend-test.primary_web_host
+  type    = "CNAME"
+  ttl     = 1
+  proxied = true
+}
 
 # resource "time_sleep" "wait_60_seconds" {
 #   create_duration = "300s" # Wait for 60 seconds
