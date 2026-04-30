@@ -10,8 +10,8 @@ output "frontend_static_website_host" {
   value = module.rg-qliufrontend-test.static_website_host
 }
 
-output "frontend_public_index_url" {
-  value = module.rg-qliufrontend-test.public_index_url
+output "frontend_url" {
+  value = module.rg-qliufrontend-test.frontend_url
 }
 
 output "frontend_cloudflare_record_hostname" {
