@@ -26,7 +26,6 @@ provider "azurerm" {
 
 locals {
   storage_account_name = "stqliufrontendtest"
-  primary_blob_host    = "${local.storage_account_name}.blob.core.windows.net"
 }
 
 resource "azurerm_resource_group" "rg-qliufrontend-test" {
@@ -50,14 +49,6 @@ resource "azurerm_storage_account" "st-qliufrontend-test" {
     index_document     = "index.html"
     error_404_document = "404.html"
   }
-
-  custom_domain {
-    name = var.dns_name
-  }
-
-  depends_on = [
-    cloudflare_record.dns-qliufrontend-test
-  ]
 }
 
 # # Create a CDN Profile
@@ -113,10 +104,37 @@ resource "azurerm_storage_account" "st-qliufrontend-test" {
 resource "cloudflare_record" "dns-qliufrontend-test" {
   zone_id = var.cloudflare_zone_id
   name    = var.dns_name
-  value   = local.primary_blob_host
+  value   = azurerm_storage_account.st-qliufrontend-test.primary_web_host
   type    = "CNAME"
-  ttl     = 300
-  proxied = false
+  ttl     = 1
+  proxied = true
+}
+
+resource "cloudflare_ruleset" "redirect_root_to_public_index" {
+  zone_id     = var.cloudflare_zone_id
+  name        = "redirects"
+  description = "Redirect root requests to the static website index page"
+  kind        = "zone"
+  phase       = "http_request_dynamic_redirect"
+
+  rules {
+    ref         = "redirect_root_to_public_index"
+    description = "Redirect root URL to /public/index.html"
+    expression  = "(http.host eq \"${var.dns_name}\" and http.request.uri.path eq \"/\")"
+    action      = "redirect"
+
+    action_parameters {
+      from_value {
+        status_code = 301
+
+        target_url {
+          value = "/public/index.html"
+        }
+
+        preserve_query_string = false
+      }
+    }
+  }
 }
 
 # resource "time_sleep" "wait_60_seconds" {

@@ -2,8 +2,8 @@ output "static_website_host" {
   value = azurerm_storage_account.st-qliufrontend-test.primary_web_host
 }
 
-output "blob_host" {
-  value = local.primary_blob_host
+output "public_index_url" {
+  value = "https://${var.dns_name}/public/index.html"
 }
 
 output "cloudflare_record_hostname" {
