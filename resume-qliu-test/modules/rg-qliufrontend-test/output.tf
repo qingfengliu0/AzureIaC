@@ -3,7 +3,7 @@ output "static_website_host" {
 }
 
 output "frontend_url" {
-  value = "https://${var.dns_name}/"
+  value = "https://${azurerm_storage_account.st-qliufrontend-test.primary_web_host}/public/index.html"
 }
 
 output "cloudflare_record_hostname" {
