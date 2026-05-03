@@ -5,7 +5,8 @@ projects:
   workflow: default
   autoplan:
     when_modified:
-    - 'main.tf'                     # Run plan if any Terraform files change here
+    - '*.tf'
+    - 'modules/**/*.tf'
     enabled: true
   apply_requirements: []
   branch: /test/                    # Apply changes only for the test branch
@@ -14,7 +15,8 @@ projects:
   workflow: default
   autoplan:
     when_modified:
-    - 'main.tf'                     # Run plan if any Terraform files change here
+    - '*.tf'
+    - 'modules/**/*.tf'
     enabled: true
   apply_requirements: []
   branch: /main/                    # Apply changes only for the production branch                  # Run plan if any Terraform files change here

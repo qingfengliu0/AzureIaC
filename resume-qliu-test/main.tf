@@ -33,9 +33,12 @@ provider "cloudflare" {
 }
 
 module "rg-qliufrontend-test" {
-  source = "./modules/rg-qliufrontend-test"
-  admin_password = var.admin_password
+  source             = "./modules/rg-qliufrontend-test"
+  admin_password     = var.admin_password
+  cloudflare_email   = var.cloudflare_email
   cloudflare_api_key = var.cloudflare_api_key
+  cloudflare_zone_id = var.cloudflare_zone_id
+  dns_name           = var.dns_name
 }
 
 

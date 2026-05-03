@@ -30,6 +30,11 @@ provider "azurerm" {
   resource_provider_registrations = "none"  # Disable auto-registration
 }
 
+locals {
+  storage_account_name        = "stqliufrontendprod"
+  storage_static_website_host = "${local.storage_account_name}.z5.web.core.windows.net"
+}
+
 #register the Microsoft.Storage resource provider
 resource "azapi_resource_action" "register_storage" {
   type                   = "Microsoft.Resources/subscriptions@2022-12-01"
@@ -53,16 +58,45 @@ resource "azurerm_resource_group" "rg-qliufrontend-prod" {
 
 #Create a Blob Storage for holding the static code
 resource "azurerm_storage_account" "st-qliufrontend-prod" {
-  name                     = "stqliufrontendprod" # Ensure this name is globally unique
+  name                     = local.storage_account_name # Ensure this name is globally unique
   resource_group_name      = azurerm_resource_group.rg-qliufrontend-prod.name
   location                 = azurerm_resource_group.rg-qliufrontend-prod.location
   account_tier             = "Standard"
   account_replication_type = "LRS"
   https_traffic_only_enabled = false 
+  
+  custom_domain {
+    name          = var.dns_name
+    use_subdomain = true
+  }
+  
   static_website {
     index_document     = "index.html"
     error_404_document = "404.html"
   }
+  
+  depends_on = [
+    cloudflare_record.asverify_dns_qliufrontend_prod,
+  ]
+}
+
+
+resource "cloudflare_record" "asverify_dns_qliufrontend_prod" {
+  zone_id = var.cloudflare_zone_id
+  name    = "asverify.${var.dns_name}"
+  value   = "asverify.${local.storage_static_website_host}"
+  type    = "CNAME"
+  ttl     = 1
+  proxied = false
+}
+
+resource "cloudflare_record" "dns-qliufrontend-prod" {
+  zone_id = var.cloudflare_zone_id
+  name    = var.dns_name
+  value   = azurerm_storage_account.st-qliufrontend-prod.primary_web_host
+  type    = "CNAME"
+  ttl     = 1
+  proxied = true
 }
 
 # # Create a CDN Profile
