@@ -25,7 +25,8 @@ provider "azurerm" {
 }
 
 locals {
-  storage_account_name = "stqliufrontendtest"
+  storage_account_name        = "stqliufrontendtest"
+  storage_static_website_host = "${local.storage_account_name}.z5.web.core.windows.net"
 }
 
 resource "azurerm_resource_group" "rg-qliufrontend-test" {
@@ -45,10 +46,29 @@ resource "azurerm_storage_account" "st-qliufrontend-test" {
   account_tier               = "Standard"
   account_replication_type   = "LRS"
   https_traffic_only_enabled = false
+
+  custom_domain {
+    name          = var.dns_name
+    use_subdomain = true
+  }
+
   static_website {
     index_document     = "index.html"
     error_404_document = "404.html"
   }
+
+  depends_on = [
+    cloudflare_record.asverify_dns_qliufrontend_test
+  ]
+}
+
+resource "cloudflare_record" "asverify_dns_qliufrontend_test" {
+  zone_id = var.cloudflare_zone_id
+  name    = "asverify.${var.dns_name}"
+  value   = "asverify.${local.storage_static_website_host}"
+  type    = "CNAME"
+  ttl     = 1
+  proxied = false
 }
 
 # # Create a CDN Profile
