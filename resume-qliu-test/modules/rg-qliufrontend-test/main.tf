@@ -24,6 +24,11 @@ provider "azurerm" {
   features {}
 }
 
+locals {
+  storage_account_name        = "stqliufrontendtest"
+  storage_static_website_host = "${local.storage_account_name}.z5.web.core.windows.net"
+}
+
 resource "azurerm_resource_group" "rg-qliufrontend-test" {
   name     = "rg-qliufrontend-test"
   location = var.location
@@ -35,25 +40,44 @@ resource "azurerm_resource_group" "rg-qliufrontend-test" {
 
 # Create a Blob Storage for holding the static code
 resource "azurerm_storage_account" "st-qliufrontend-test" {
-  name                     = "stqliufrontendtest" # Ensure this name is globally unique
-  resource_group_name      = azurerm_resource_group.rg-qliufrontend-test.name
-  location                 = azurerm_resource_group.rg-qliufrontend-test.location
-  account_tier             = "Standard"
-  account_replication_type = "LRS"
-  https_traffic_only_enabled = false 
+  name                       = local.storage_account_name # Ensure this name is globally unique
+  resource_group_name        = azurerm_resource_group.rg-qliufrontend-test.name
+  location                   = azurerm_resource_group.rg-qliufrontend-test.location
+  account_tier               = "Standard"
+  account_replication_type   = "LRS"
+  https_traffic_only_enabled = false
+
+  custom_domain {
+    name          = var.dns_name
+    use_subdomain = true
+  }
+
   static_website {
     index_document     = "index.html"
     error_404_document = "404.html"
   }
+
+  depends_on = [
+    cloudflare_record.asverify_dns_qliufrontend_test
+  ]
 }
 
-# Create a CDN Profile
-resource "azurerm_cdn_profile" "cdnp-qliufrontend-test" {
-  name                = "cdnp-qliufrontend-test"
-  location            = "eastus"
-  resource_group_name = azurerm_resource_group.rg-qliufrontend-test.name
-  sku                 = "Standard_Microsoft"
+resource "cloudflare_record" "asverify_dns_qliufrontend_test" {
+  zone_id = var.cloudflare_zone_id
+  name    = "asverify.${var.dns_name}"
+  value   = "asverify.${local.storage_static_website_host}"
+  type    = "CNAME"
+  ttl     = 1
+  proxied = false
 }
+
+# # Create a CDN Profile
+# resource "azurerm_cdn_profile" "cdnp-qliufrontend-test" {
+#   name                = "cdnp-qliufrontend-test"
+#   location            = "eastus"
+#   resource_group_name = azurerm_resource_group.rg-qliufrontend-test.name
+#   sku                 = "Standard_Microsoft"
+# }
 
 # # Create a CDN Endpoint, origin is the web storage endpoint
 # resource "azurerm_cdn_endpoint" "cdne-qliufrontend-test" {
@@ -97,13 +121,40 @@ resource "azurerm_cdn_profile" "cdnp-qliufrontend-test" {
 #   }
 # }
 
-# # Define the DNS record in Cloudflare
-# resource "cloudflare_record" "dns-qliufrontend-test" {
-#   zone_id = var.cloudflare_zone_id
-#   name    = var.dns_name
-#   value   = azurerm_cdn_endpoint.cdne-qliufrontend-test.fqdn 
-#   type    = "CNAME"
-#   ttl     = 300
+resource "cloudflare_record" "dns-qliufrontend-test" {
+  zone_id = var.cloudflare_zone_id
+  name    = var.dns_name
+  value   = azurerm_storage_account.st-qliufrontend-test.primary_web_host
+  type    = "CNAME"
+  ttl     = 1
+  proxied = true
+}
+
+# resource "cloudflare_ruleset" "redirect_root_to_public_index" {
+#   zone_id     = var.cloudflare_zone_id
+#   name        = "redirects"
+#   description = "Redirect root requests to the Azure static website public index"
+#   kind        = "zone"
+#   phase       = "http_request_dynamic_redirect"
+
+#   rules {
+#     ref         = "redirect_root_to_public_index"
+#     description = "Redirect root URL to Azure static website /public/index.html"
+#     expression  = "(http.host eq \"${var.dns_name}\" and http.request.uri.path eq \"/\")"
+#     action      = "redirect"
+
+#     action_parameters {
+#       from_value {
+#         status_code = 301
+
+#         target_url {
+#           value = "https://${azurerm_storage_account.st-qliufrontend-test.primary_web_host}/public/index.html"
+#         }
+
+#         preserve_query_string = false
+#       }
+#     }
+#   }
 # }
 
 # resource "time_sleep" "wait_60_seconds" {
