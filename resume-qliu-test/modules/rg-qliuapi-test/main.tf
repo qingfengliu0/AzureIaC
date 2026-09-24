@@ -93,7 +93,7 @@ resource "azurerm_linux_function_app" "func-recordvisit-test" {
 
   app_settings = {
     "FUNCTIONS_WORKER_RUNTIME"          = "python"
-    "comsmos-container-connection"     = var.db_connectionstring
+    "comsmos_container_connection"     = var.db_connectionstring
     "APPLICATIONINSIGHTS_CONNECTION_STRING" = azurerm_application_insights.appi-recordvisit-test.connection_string
     "APPINSIGHTS_INSTRUMENTATIONKEY"        = azurerm_application_insights.appi-recordvisit-test.instrumentation_key
   }
